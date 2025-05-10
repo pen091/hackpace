@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackPace - Coding Dojo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hacker-green: #00ff00;
+            --dark-bg: #1a1a1a;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--hacker-green);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Matrix background effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Header styles */
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--hacker-green);
+        }
+
+        .logo {
+            font-size: 2rem;
+            text-shadow: 0 0 10px var(--hacker-green);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo::after {
+            content: "_";
+            animation: cursor-blink 1s infinite;
+        }
+
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Course grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            margin-top: 100px;
+        }
+
+        .course-card {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            border: 1px solid var(--hacker-green);
+            border-radius: 5px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--hacker-green);
+        }
+
+        /* Social links */
+        .social-links {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .social-links a {
+            color: var(--hacker-green);
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        /* Content container */
+        .content-container {
+            display: none;
+            padding: 2rem;
+            margin-top: 100px;
+        }
+
+        .back-button {
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        /* Terminal effect */
+        .terminal {
+            border: 2px solid var(--hacker-green);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg" id="matrix"></div>
+    
+    <header class="header">
+        <div class="logo">HackPace</div>
+        <nav class="nav-menu">
+            <a href="#home" onclick="showSection('home')">Home</a>
+            <a href="#courses" onclick="showSection('courses')">Courses</a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <div class="course-grid" id="courses-section">
+            <div class="course-card" onclick="showCourse('c')">
+                <h3><i class="fas fa-terminal"></i> C Programming</h3>
+                <p>Master low-level programming and system development</p>
+            </div>
+            <div class="course-card" onclick="showCourse('linux')">
+                <h3><i class="fab fa-linux"></i> Linux Administration</h3>
+                <p>Become a server management expert</p>
+            </div>
+            <div class="course-card" onclick="showCourse('python')">
+                <h3><i class="fab fa-python"></i> Python Programming</h3>
+                <p>Learn scripting and automation</p>
+            </div>
+            <div class="course-card" onclick="showCourse('bash')">
+                <h3><i class="fas fa-code"></i> Bash Scripting</h3>
+                <p>Automate tasks like a pro</p>
+            </div>
+        </div>
+
+        <div class="content-container" id="course-content">
+            <div class="back-button" onclick="showSection('courses')">
+                ← Back to Courses
+            </div>
+            <div id="course-data"></div>
+        </div>
+    </main>
+
+    <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i> GitHub</a>
+        <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="#"><i class="fab fa-discord"></i> Discord</a>
+    </div>
+
+    <script>
+        // Matrix background effect
+        function createMatrix() {
+            const characters = "01";
+            const matrix = document.getElementById('matrix');
+            
+            function generateLine() {
+                const div = document.createElement('div');
+                div.style.animation = `fall ${Math.random() * 5 + 3}s linear infinite`;
+                
+                for(let i = 0; i < 50; i++) {
+                    div.innerHTML += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                
+                matrix.appendChild(div);
+            }
+
+            for(let i = 0; i < 50; i++) {
+                generateLine();
+            }
+        }
+
+        // Course data
+        const courses = {
+            c: {
+                title: "C Programming Masterclass",
+                content: `<div class="terminal">
+                    <h3>Welcome to C Programming!</h3>
+                    <p>Learn fundamental concepts:</p>
+                    <ul>
+                        <li>Pointers and memory management</li>
+                        <li>Data structures and algorithms</li>
+                        <li>System programming</li>
+                    </ul>
+                    <pre>#include &lt;stdio.h&gt;
+
+int main() {
+    printf("Hello Hackers!");
+    return 0;
+}</pre>
+                </div>`
+            },
+            linux: {
+                title: "Linux Administration Pro",
+                content: `<div class="terminal">
+                    <h3>Master Linux Systems</h3>
+                    <p>Key topics:</p>
+                    <ul>
+                        <li>User and permission management</li>
+                        <li>Network configuration</li>
+                        <li>Server hardening</li>
+                    </ul>
+                    <pre>$ sudo apt-get install knowledge</pre>
+                </div>`
+            },
+            python: {
+                title: "Python Automation",
+                content: `<div class="terminal">
+                    <h3>Python Power!</h3>
+                    <p>Learn to automate:</p>
+                    <ul>
+                        <li>Web scraping</li>
+                        <li>Data analysis</li>
+                        <li>Task automation</li>
+                    </ul>
+                    <pre>print("Hack the Planet!")</pre>
+                </div>`
+            },
+            bash: {
+                title: "Bash Scripting Guru",
+                content: `<div class="terminal">
+                    <h3>Bash Automation</h3>
+                    <p>Master shell scripting:</p>
+                    <ul>
+                        <li>Automate repetitive tasks</li>
+                        <li>System monitoring</li>
+                        <li>Advanced scripting techniques</li>
+                    </ul>
+                    <pre>#!/bin/bash
+echo "Hello Terminal!"</pre>
+                </div>`
+            }
+        };
+
+        // Navigation functions
+        function showSection(section) {
+            if(section === 'courses') {
+                document.getElementById('courses-section').style.display = 'grid';
+                document.getElementById('course-content').style.display = 'none';
+            }
+        }
+
+        function showCourse(courseId) {
+            document.getElementById('courses-section').style.display = 'none';
+            document.getElementById('course-content').style.display = 'block';
+            document.getElementById('course-data').innerHTML = courses[courseId].content;
+        }
+
+        // Initialize matrix effect
+        createMatrix();
+    </script>
+</body>
+</html>
