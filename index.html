@@ -114,6 +114,70 @@
             margin: 20px 0;
             border-radius: 5px;
         }
+
+        <!-- Add this CSS -->
+<style>
+    /* Updated Social Links Styles */
+    .social-links {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid var(--hacker-green);
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+    }
+
+    .social-links a {
+        color: var(--hacker-green);
+        text-decoration: none;
+        margin: 0 10px;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #00ff00;
+        text-shadow: 0 0 10px var(--hacker-green);
+        transform: scale(1.1);
+    }
+
+    .social-links i {
+        font-size: 1.2em;
+    }
+</style>
+
+<!-- Add this HTML -->
+<div class="social-links">
+    <a href="#" target="_blank">
+        <i class="fab fa-x-twitter"></i>
+        <span>X</span>
+    </a>
+    <a href="#" target="_blank">
+        <i class="fab fa-tiktok"></i>
+        <span>TikTok</span>
+    </a>
+    <a href="#" target="_blank">
+        <i class="fab fa-instagram"></i>
+        <span>Instagram</span>
+    </a>
+    <a href="#" target="_blank">
+        <i class="fab fa-youtube"></i>
+        <span>YouTube</span>
+    </a>
+    <a href="#" target="_blank">
+        <i class="fab fa-github"></i>
+        <span>GitHub</span>
+    </a>
+    <a href="#" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span>WhatsApp</span>
+    </a>
+</div>
     </style>
 </head>
 <body>
