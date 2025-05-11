@@ -481,39 +481,6 @@ echo "Hello Terminal!"</pre>
 
         // Initialize matrix effect
         createMatrix();
-
-
-    function showCourse(courseId, event) {
-            event.preventDefault();
-            const modal = document.getElementById('courseModal');
-            const {title, content} = courseContent[courseId];
-            
-            document.getElementById('modalTitle').innerHTML = title;
-            document.getElementById('modalContent').innerHTML = content;
-            modal.style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('courseModal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('courseModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-
-        // Close with ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        // Terminal-like typing effect
-        document.querySelectorAll('.course-link').forEach(link => {
-            link.innerHTML = link.innerHTML.replace(/>/g, '<span class="blink">_</span>');
-        });
     </script>
 </body>
 </html>
