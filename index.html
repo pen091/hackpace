@@ -345,6 +345,13 @@ echo "Hello Terminal!"</pre>
             }
         }
 
+      // Enrollment function
+        function enroll(course) {
+            const message = `Hello! I want to enroll in ${course} course.`;
+            const whatsappUrl = `https://wa.me/+2349132165565?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }  
+
         function showCourse(courseId) {
             document.getElementById('courses-section').style.display = 'none';
             document.getElementById('course-content').style.display = 'block';
