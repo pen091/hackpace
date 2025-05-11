@@ -415,9 +415,10 @@
         <a href="#"><i class="fab fa-discord"></i> Discord</a>
     </div>
 
-    <script>
-        
-            // Course outline content
+    
+    <!-- Update the script section -->
+<script>
+    // Course outline content
     const courseOutlines = {
         'c-outline1': {
             title: "C BASIC/ADVANCE",
@@ -450,105 +451,7 @@ struct node {
         // Add other course outlines similarly
     };
 
-        // Matrix background effect
-        function createMatrix() {
-            const characters = "01";
-            const matrix = document.getElementById('matrix');
-            
-            function generateLine() {
-                const div = document.createElement('div');
-                div.style.animation = `fall ${Math.random() * 5 + 3}s linear infinite`;
-                
-                for(let i = 0; i < 50; i++) {
-                    div.innerHTML += characters.charAt(Math.floor(Math.random() * characters.length));
-                }
-                
-                matrix.appendChild(div);
-            }
-
-            for(let i = 0; i < 50; i++) {
-                generateLine();
-            }
-        }
-
-        // Course data
-        const courses = {
-            c: {
-                title: "C Programming Masterclass",
-                content: `<div class="terminal">
-                    <h3>Welcome To C Programming!</h3>
-                    <p>Beginner To professional</p>
-                    <p>CheckOut Course Contents :</p>
-                    <div class="course-links">
-                         <a href="#" class="course-link" onclick="showCourse('c-outline1', event)">> C BASIC/ADVANCE</a>
-                         <a href="#" class="course-link" onclick="showCourse('c-outline2', event)">> DATA STRUCTURE</a>
-                         <a href="#" class="course-link" onclick="showCourse('c-outline3', event)">> SYSTEM CALLS</a>
-                         <a href="#" class="course-link" onclick="showCourse('c-outline4', event)">> FILE I/O OPERATION</a>
-                    </div>
-                    <pre>#include &lt;stdio.h&gt;
-
-int main() {
-    printf("Hello Hackers!");
-    return 0;
-}</pre>
-<button class="enroll-btn" onclick="enroll('C Programming')">  ➔   Enroll Now</button>
-                </div>`
-            },
-            linux: {
-                title: "Linux Administration Pro",
-                content: `<div class="terminal">
-                    <h3>Master Linux Systems</h3>
-                    <p>Beginner To Professional
-                    <p>CheckOut Course Contents :</p>
-                    <div class="course-links">
-                         <a href="#" class="course-link" onclick="showCourse('l-outline1', event)">> LINUX BASIC/ADVANCE COMMANDS</a>
-                         <a href="#" class="course-link" onclick="showCourse('l-outline2', event)">> THE KERNEL</a>
-                         <a href="#" class="course-link" onclick="showCourse('l-outline3', event)">> NETWORK CONFIGURATION</a>
-                         <a href="#" class="course-link" onclick="showCourse('l-outline4', event)">> SERVICE MANAGEMENT (systemd)</a>
-                    </div>
-                    <pre>$ sudo apt-get install knowledge</pre>
-                    <button class="enroll-btn" onclick="enroll('Linux Administration')">  ➔   Enroll Now</button>
-                </div>`
-            },
-            python: {
-                title: "Python Scripting",
-                content: `<div class="terminal">
-                    <h3>Python Power!</h3>
-                    <p>Beginner To Professional</p>
-                    <p>CheckOut Course Contents :</p>
-                    <div class="course-links">
-                         <a href="#" class="course-link" onclick="showCourse('p-outline1', event)">> PYTHON BASIC</a>
-                         <a href="#" class="course-link" onclick="showCourse('p-outline2', event)">> PYTHON OBJECT-ORIENTED PROGRAMMING</a>
-                         <a href="#" class="course-link" onclick="showCourse('p-outline3', event)">> PYTHON WEB DEVELOPMENT (django)</a>
-                         <a href="#" class="course-link" onclick="showCourse('p-outline4', event)">> PYTHON MOBILE APP (kivy)</a>
-                    </div>
-                    <pre>print("Hack the Planet!")</pre>
-                    <button class="enroll-btn" onclick="enroll('Python Programming')">  ➔   Enroll Now</button>
-                </div>`
-            },
-            bash: {
-                title: "Bash Scripting Guru",
-                content: `<div class="terminal">
-                    <h3>Bash Automation</h3>
-                    <p>Master shell scripting</p>
-                    <p>Beginner To Professional</p>
-                    <p>CheckOut Course Contents :</p>
-                    <div class="course-links">
-                        <a href="#" class="course-link" onclick="showCourse('b-outline1', event)">> BASH BASIC/ADVANCE</a>
-                        <a href="#" class="course-link" onclick="showCourse('b-outline2', event)">> BACKDOOR MAINTENANCE</a>
-                        <a href="#" class="course-link" onclick="showCourse('b-outline3', event)">> NETWORK MAPPING</a>
-                        <a href="#" class="course-link" onclick="showCourse('b-outline4', event)">> LOG CLEANING</a>
-                   </div>
-                    <pre>#!/bin/bash
-echo "Hello Terminal!"</pre>
- <button class="enroll-btn" onclick="enroll('Bash Scripting')">  ➔   Enroll Now</button>          
- </div>`
-            }  
-        };
-
-        // open popup course outline
-            
-            // Show outline in modal
+    // Show outline in modal
     function showCourse(outlineId, event) {
         event.preventDefault();
         const outline = courseOutlines[outlineId];
@@ -591,58 +494,8 @@ echo "Hello Terminal!"</pre>
         const whatsappUrl = `https://wa.me/+2349132165565?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     }
-        // close popup course outline
-        
-        // Navigation functions
-        function showSection(section) {
-            if(section === 'courses') {
-                document.getElementById('courses-section').style.display = 'grid';
-                document.getElementById('course-content').style.display = 'none';
-            }
-        }
 
-      // Enrollment function
-        function enroll(course) {
-            const message = `Hello! I want to enroll in ${course} course.`;
-            const whatsappUrl = `https://wa.me/+2349132165565?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-        }  
-
-        function showCourse(courseId) {
-            document.getElementById('courses-section').style.display = 'none';
-            document.getElementById('course-content').style.display = 'block';
-            document.getElementById('course-data').innerHTML = courses[courseId].content;
-        }
-
-        // model
-        
-        function closeModal() {
-            document.getElementById('courseModal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('courseModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-
-        // Close with ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        // Terminal-like typing effect
-        document.querySelectorAll('.course-link').forEach(link => {
-            link.innerHTML = link.innerHTML.replace(/>/g, '<span class="blink">_</span>');
-        });
-
-
-        // close modell
-
-        // Initialize matrix effect
-        createMatrix();
-    </script>
+    createMatrix();
+</script>
 </body>
 </html>
