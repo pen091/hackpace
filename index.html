@@ -115,27 +115,21 @@
             border-radius: 5px;
         }
         <!-- arrow -->
-            .arrow {
-            font-size: 48px;
-            color: #ff0000;
-            animation: blink 1s infinite;
-        }
+                .big-arrow {
+      font-size: 300px; /* Very big size */
+      text-align: center;
+      margin-top: 100px;
+      animation: blink 1s infinite;
+    }
 
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        /* Optional - center the arrow on the page */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+    }
 
         <!-- Add this CSS -->
 <style>
