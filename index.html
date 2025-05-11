@@ -131,6 +131,121 @@
       }
     }
 
+    <!-- open popup -->
+
+    body {
+            background-color: #001100;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+        }
+
+        .course-links {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #00ff00;
+            box-shadow: 0 0 15px #00ff0080;
+        }
+
+        .course-link {
+            display: block;
+            padding: 15px 20px;
+            margin: 10px 0;
+            color: #00ff00;
+            text-decoration: none;
+            font-size: 18px;
+            border-left: 4px solid #00ff00;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .course-link:hover {
+            background-color: #002200;
+            padding-left: 25px;
+            box-shadow: 0 0 10px #00ff0080;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 20, 0, 0.95);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #001100;
+            margin: 15% auto;
+            padding: 25px;
+            width: 70%;
+            max-width: 600px;
+            border: 1px solid #00ff00;
+            box-shadow: 0 0 20px #00ff00;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 48%,
+                #00ff0044 50%,
+                transparent 52%
+            );
+            animation: scan 4s linear infinite;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+            z-index: 2;
+        }
+
+        .modal-body pre {
+            background-color: #000000;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0) rotate(45deg); }
+            100% { transform: translateY(100%) rotate(45deg); }
+        }
+
+        .glitch {
+            animation: glitch 1s linear infinite;
+        }
+
+        @keyframes glitch {
+            2% { text-shadow: 2px 0 #ff00ff; }
+            4% { text-shadow: -2px 0 #00ffff; }
+            6% { text-shadow: 2px 0 #ff00ff; }
+            8% { text-shadow: -2px 0 #00ffff; }
+            10% { text-shadow: 0 0 transparent; }
+            100% { text-shadow: 0 0 transparent; }
+        }
+    
+    <!-- close popup -->
+
         <!-- Add this CSS -->
 <style>
     /* Updated Social Links Styles */
@@ -165,6 +280,8 @@
     .social-links i {
         font-size: 1.2em;
     }
+
+        
 </style>
 
 <!-- Add this HTML -->
