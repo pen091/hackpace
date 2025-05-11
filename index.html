@@ -548,7 +548,49 @@ echo "Hello Terminal!"</pre>
 
         // open popup course outline
             
+            // Show outline in modal
+    function showCourse(outlineId, event) {
+        event.preventDefault();
+        const outline = courseOutlines[outlineId];
+        const modal = document.getElementById('courseModal');
+        const modalContent = document.getElementById('modalContent');
         
+        modalContent.innerHTML = `
+            <h2 class="glitch">${outline.title}</h2>
+            <div class="course-outline-content">
+                <pre>${outline.content}</pre>
+                <button class="enroll-btn" onclick="enroll('${outline.title}')">
+                    ➔ Enroll Now
+                </button>
+            </div>
+        `;
+        modal.style.display = "block";
+    }
+
+    // Close modal
+    function closeModal() {
+        document.getElementById('courseModal').style.display = "none";
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('courseModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // Update enroll function
+    function enroll(course) {
+        const message = `I want to enroll in ${course} course on HackPace`;
+        const whatsappUrl = `https://wa.me/+2349132165565?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    }
         // close popup course outline
         
         // Navigation functions
