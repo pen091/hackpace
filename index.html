@@ -558,6 +558,33 @@ done</pre>`
             document.getElementById('course-data').innerHTML = courses[courseId].content;
         }
 
+        // model
+        
+        function closeModal() {
+            document.getElementById('courseModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('courseModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Close with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Terminal-like typing effect
+        document.querySelectorAll('.course-link').forEach(link => {
+            link.innerHTML = link.innerHTML.replace(/>/g, '<span class="blink">_</span>');
+        });
+
+
+        // close modell
+
         // Initialize matrix effect
         createMatrix();
     </script>
