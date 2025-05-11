@@ -314,6 +314,13 @@
     </style>
 </head>
 <body>
+    <!-- Add this modal HTML before closing body tag -->
+    <div id="courseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-body" id="modalContent"></div>
+        </div>
+    </div>
     <div class="matrix-bg" id="matrix"></div>
     
     <header class="header">
