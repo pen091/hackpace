@@ -390,12 +390,13 @@
                 content: `<div class="terminal">
                     <h3>Welcome To C Programming!</h3>
                     <p>Beginner To professional</p>
-                    <p>Course Contents :</p>
-                    <ul>
-                        <li>Pointers and memory management</li>
-                        <li>Data structures and algorithms</li>
-                        <li>System programming</li>
-                    </ul>
+                    <p>Checkout Course Contents :</p>
+                    <div class="course-links">
+                         <a href="#" class="course-link" onclick="showCourse('c', event)">> C_PROGRAMMING</a>
+                         <a href="#" class="course-link" onclick="showCourse('linux', event)">> LINUX_ADMIN</a>
+                         <a href="#" class="course-link" onclick="showCourse('python', event)">> PYTHON_SCRIPTING</a>
+                         <a href="#" class="course-link" onclick="showCourse('bash', event)">> BASH_SCRIPTING</a>
+                    </div>
                     <pre>#include &lt;stdio.h&gt;
 
 int main() {
