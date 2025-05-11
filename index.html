@@ -472,7 +472,8 @@ int main() {
     // Bypass security protocols
     printf("System accessed\\n");
     return 0;
-}</pre>`
+}</pre>
+    </div>`    
             },
             l-outline1: {
                 title: "LINUX_ADMIN",
@@ -488,8 +489,10 @@ int main() {
 tcpdump -i eth0 -w capture.pcap
 
 # Hidden process
-ps -ef | grep -v '\[.*\]'</pre>`
+ps -ef | grep -v '\[.*\]'</pre>
+    </div>'
             },
+        
             p-outline1: {
                 title: "PYTHON_SCRIPTING",
                 content: `<div class="terminal">
@@ -508,7 +511,8 @@ for port in range(1, 1025):
     result = sock.connect_ex(('target', port))
     if result == 0:
         print(f"Port {port} open")
-    sock.close()</pre>`
+    sock.close()</pre>
+        </div>`
             },
             b-outline1: {
                 title: "BASH_SCRIPTING",
@@ -525,7 +529,8 @@ for port in range(1, 1025):
 # Stealth port scan
 for ip in {1..254}; do
     nmap -sS -T4 192.168.1.$ip &
-done</pre>`
+done</pre>
+        </div>`
             }
         };
         
