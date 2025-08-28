@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackpace - Free URL Sharing</title>
+    <title>Hackpace - Permanent URL Sharing</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -104,6 +104,35 @@
         .refresh-btn:hover {
             background: linear-gradient(to right, #2a4b8c, #3a6bcc);
         }
+        
+        .link-output {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .generated-link {
+            color: #fdbb2d;
+            word-break: break-all;
+            font-weight: 500;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(to right, #1a2a6c, #2a4b8c);
+            padding: 10px 15px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: linear-gradient(to right, #2a4b8c, #3a6bcc);
+        }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -112,7 +141,7 @@
         <header class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 dance-text">HACKPACE</h1>
             <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-                Free URL sharing with cross-device access
+                Permanent URL sharing with cross-device access
             </p>
         </header>
         
@@ -216,6 +245,46 @@
             </div>
         </div>
         
+        <!-- Invite Link Generator Card -->
+        <div class="card p-6 md:p-8 mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-yellow-400">
+                <i class="fas fa-link"></i> Invite Link Generator
+            </h2>
+            
+            <p class="text-gray-300 mb-6">Generate unique invite links to share with your community:</p>
+            
+            <button id="generateBtn" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-red-700 rounded-lg font-semibold flex items-center justify-center gap-2">
+                <i class="fas fa-magic"></i> Generate Invite Link
+            </button>
+            
+            <div id="linkOutput" class="link-output">
+                <div class="flex items-center justify-between">
+                    <span id="generatedLink" class="generated-link"></span>
+                    <button id="copyBtn" class="copy-btn">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-yellow-400 mb-3 text-lg font-semibold">How it works:</h3>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-3 text-gray-300">
+                        <i class="fas fa-random text-yellow-400"></i>
+                        <span>Generates unique, random invite codes</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-300">
+                        <i class="fas fa-copy text-yellow-400"></i>
+                        <span>One-click copying to clipboard</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-300">
+                        <i class="fas fa-users text-yellow-400"></i>
+                        <span>Perfect for community invites</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- About Section -->
         <div class="card p-6 md:p-8 mb-12">
             <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-yellow-400">
@@ -223,18 +292,14 @@
             </h2>
             
             <p class="text-gray-300 mb-8">
-                With over 10+ years of experience in C programming 
-                With over 4+ years of experience in Python programming
-                With over 10+ years of experience in Bash scripting programming
-                With over 8+ years of experience in Linux administration
-                cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone, regardless of their technical background. I believe in empowering users to take control of their online privacy.
+                With over 5 years of experience in cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone, regardless of their technical background. I believe in empowering users to take control of their online privacy.
             </p>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
                     <i class="fab fa-tiktok text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">10,000+</h3>
-                    <p class="text-gray-300 mb-3">Tiktok Active Community</p>
+                    <p class="text-gray-300 mb-3">Active Community</p>
                     <a href="https://tiktok.com/@yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-tiktok"></i> Follow
                     </a>
@@ -243,7 +308,7 @@
                 <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
                     <i class="fab fa-github text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">350+</h3>
-                    <p class="text-gray-300 mb-3">github Projects Launched</p>
+                    <p class="text-gray-300 mb-3">Projects Launched</p>
                     <a href="https://github.com/yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-github"></i> View
                     </a>
@@ -280,7 +345,7 @@
         
         <!-- Footer -->
         <footer class="text-center pt-8 border-t border-gray-800">
-            <p class="text-gray-400">© 2025 Hackpace | Privacy Protection Tools</p>
+            <p class="text-gray-400">© 2023 Hackpace | Privacy Protection Tools</p>
             <p class="text-gray-500 text-sm mt-2">All rights reserved</p>
         </footer>
     </div>
@@ -290,8 +355,8 @@
     
     <script>
         // Configuration - Replace with your actual values
-        const DATA_REPO_OWNER = 'pen091'; // Your GitHub username
-        const DATA_REPO = 'hackpace'; // Repository to store URLs
+        const DATA_REPO_OWNER = 'your-github-username'; // Your GitHub username
+        const DATA_REPO = 'hackpace-data'; // Repository to store URLs
         const DATA_FILE = 'urls.json'; // File to store URLs
         
         // DOM elements
@@ -565,6 +630,47 @@
             document.body.removeChild(a);
             
             showNotification(`Downloading Tor for ${selectedOS}...`);
+        });
+        
+        // Invite Link Generator Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            const linkOutput = document.getElementById('linkOutput');
+            const generatedLink = document.getElementById('generatedLink');
+            const copyBtn = document.getElementById('copyBtn');
+            
+            // Base URL for the generated link (you can customize this)
+            const baseUrl = 'https://hackpace.io/join/';
+            
+            generateBtn.addEventListener('click', function() {
+                // Generate a random code for the link
+                const randomCode = Math.random().toString(36).substring(2, 10);
+                const fullLink = baseUrl + randomCode;
+                
+                // Display the generated link
+                generatedLink.textContent = fullLink;
+                linkOutput.style.display = 'block';
+                
+                // Scroll to the generated link
+                linkOutput.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                // Copy the generated link to clipboard
+                navigator.clipboard.writeText(generatedLink.textContent)
+                    .then(() => {
+                        // Change button text temporarily
+                        const originalText = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                        showNotification('Failed to copy link to clipboard', 'error');
+                    });
+            });
         });
     </script>
 </body>
