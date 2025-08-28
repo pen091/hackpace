@@ -3,667 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackpace - Secure Developer Community</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
+    <title>Hackpace - Community Innovation Space</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #6e45e2;
-            --secondary: #88d3ce;
-            --dark-bg: #0a0a0a;
-            --body-bg: #1a1a1a;
-            --card-bg: #2a2a2a;
-            --text-light: #f0f0f0;
-        }
-        
-        body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(110, 69, 226, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(136, 211, 206, 0.1) 0%, transparent 20%);
-        }
-        
-        .header {
-            background-color: rgba(10, 10, 10, 0.95);
-            padding: 1.5rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-        
-        .dancing-text {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: inline-block;
-            animation: dance 2s infinite alternate;
-        }
-        
         @keyframes dance {
-            0% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-5px) rotate(-1deg); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(2deg); }
             50% { transform: translateY(0) rotate(0deg); }
-            75% { transform: translateY(-5px) rotate(1deg); }
-            100% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-5px) rotate(-2deg); }
         }
-        
-        .main-content {
-            flex: 1;
-            padding: 3rem 0;
-        }
-        
-        .circle-btn {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .circle-btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0));
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
-        }
-        
-        .circle-btn:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(110, 69, 226, 0.6);
-        }
-        
-        .circle-btn:hover::before {
-            transform: rotate(45deg) translate(50%, 50%);
-        }
-        
-        .circle-btn i {
-            font-size: 3rem;
-            color: white;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .link-output {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-top: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border-left: 4px solid var(--primary);
-        }
-        
-        .footer {
-            background-color: var(--dark-bg);
-            padding: 1.5rem 0;
-            border-top: 1px solid #2a2a2a;
-        }
-        
-        .social-icon {
-            font-size: 1.5rem;
-            margin: 0 10px;
-            color: #ddd;
-            transition: all 0.3s;
-        }
-        
-        .social-icon:hover {
-            color: var(--primary);
-            transform: translateY(-5px);
-        }
-        
-        .copy-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px auto;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-        
-        .copy-btn:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 6px 15px rgba(110, 69, 226, 0.5);
-        }
-        
-        .feature-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-            height: 100%;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-        
-        .nav-link {
-            transition: color 0.3s;
-            position: relative;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            transition: width 0.3s;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .text-gradient {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .masked-link {
-            font-family: 'Courier New', monospace;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            background-color: #3a3a3a;
-            padding: 12px 20px;
-            border-radius: 8px;
+        .dancing-header {
+            animation: dance 3s ease-in-out infinite;
             display: inline-block;
-            margin: 15px 0;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #4a4a4a;
-            user-select: none;
         }
-        
-        .masked-link:hover {
-            background-color: #4a4a4a;
-            border-color: var(--primary);
+        .modal {
+            transition: opacity 0.25s ease;
         }
-        
-        .about-section {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 2.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        .circle-btn {
+            transition: all 0.3s ease;
         }
-        
-        .about-header {
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
+        .circle-btn:hover {
+            transform: scale(1.1);
         }
-        
-        .progress {
-            height: 10px;
-            background-color: #3a3a3a;
-            margin: 1rem 0;
-            border-radius: 5px;
-            overflow: hidden;
+        .tor-download-btn:hover {
+            box-shadow: 0 0 15px rgba(126, 87, 194, 0.8);
         }
-        
-        .progress-bar {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            transition: width 0.5s ease;
+        .social-stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-        
-        .tor-section {
-            background: linear-gradient(to right, rgba(55, 45, 111, 0.3), rgba(86, 71, 158, 0.3));
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-            border-left: 4px solid #7e4798;
-        }
-        
-        .tor-icon {
-            font-size: 3rem;
-            color: #7e4798;
-            margin-bottom: 1rem;
-        }
-        
-        .os-btn {
-            background-color: var(--card-bg);
-            border: 2px solid #4a4a4a;
-            border-radius: 8px;
-            padding: 12px 20px;
-            margin: 5px;
-            color: var(--text-light);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .os-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .stats-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        @media (max-width: 768px) {
-            .circle-btn {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .circle-btn i {
-                font-size: 2.5rem;
-            }
-            
-            .dancing-text {
-                font-size: 2rem;
-            }
-            
-            .about-section {
-                padding: 1.5rem;
-            }
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
     </style>
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-dark">
-                <div class="container-fluid">
-                    <a class="navbar-brand fw-bold" href="#">
-                        <span class="dancing-text">Hackpace</span>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#home">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#about">About</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#tor">Tor</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#contact">Contact</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
+<body class="antialiased">
+    <!-- Header Section -->
+    <header class="container mx-auto px-4 py-12 text-center">
+        <h1 class="dancing-header text-6xl md:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+            H a c k p a c e
+        </h1>
+        <p class="mt-4 text-xl text-gray-300">Where innovation meets community</p>
     </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Home Section -->
-            <section id="home">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 text-center">
-                        <h1 class="display-4 fw-bold mb-4">Welcome to <span class="text-gradient">Hackpace</span></h1>
-                        <p class="lead mb-5">Generate secure access links with our advanced system</p>
-                        
-                        <div class="mb-5">
-                            <button class="circle-btn" id="generateBtn">
-                                <i class="fas fa-link"></i>
-                            </button>
-                            <p class="mt-3">Click to generate your secure link</p>
-                        </div>
-                        
-                        <div class="link-output text-start" id="linkOutput" style="display: none;">
-                            <h4 class="mb-3"><i class="fas fa-lock me-2"></i>Your Secure Generated Link</h4>
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progressBar"></div>
-                            </div>
-                            <p class="text-center mt-3" id="statusText">Generating your secure access link...</p>
-                            
-                            <div class="text-center mt-4" id="completedSection">
-                                <p class="mb-3">Your secure link is ready! Click to reveal:</p>
-                                <div class="masked-link" id="maskedLink"></div>
-                                <button class="copy-btn" id="copyBtn" style="display: none;">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    <!-- Main Container -->
+    <main class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Code Link Section -->
+        <section class="mb-16 p-6 bg-gray-800 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-bold mb-6 text-purple-400">Manual Code Link</h2>
+            <div class="flex items-center justify-between bg-gray-900 p-4 rounded-lg">
+                <code id="codeLink" class="text-lg text-green-400 overflow-x-auto">https://hackpace.org/join?ref=7x9a3b2c</code>
+                <button id="copyButton" class="circle-btn ml-4 p-3 bg-purple-700 hover:bg-purple-600 rounded-full flex items-center justify-center">
+                    <span class="text-white">◍</span>
+                </button>
+            </div>
+            <p id="copyFeedback" class="mt-3 text-green-400 hidden"><i class="fas fa-check-circle mr-2"></i>Copied to clipboard!</p>
+        </section>
+
+        <!-- Tor Browser Download Section -->
+        <section class="mb-16 p-6 bg-gray-800 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-bold mb-6 text-blue-400 flex items-center">
+                <i class="fas fa-lock mr-3"></i>Tor Browser Download
+            </h2>
+            <p class="mb-6 text-gray-300">Protect your privacy and browse anonymously. Select your operating system to download Tor Browser:</p>
             
-            <!-- Tor Browser Section -->
-            <section id="tor" class="mt-5">
-                <div class="tor-section">
-                    <div class="text-center">
-                        <i class="fab fa-tor-onion tor-icon"></i>
-                        <h2 class="mb-4">Download Tor Browser</h2>
-                        <p class="mb-4">Enhance your privacy and security with Tor Browser</p>
-                        
-                        <div class="mb-4">
-                            <h5 class="mb-3">Select your operating system:</h5>
-                            <div class="d-flex flex-wrap justify-content-center">
-                                <button class="os-btn" data-os="windows">
-                                    <i class="fab fa-windows me-2"></i>Windows
-                                </button>
-                                <button class="os-btn" data-os="mac">
-                                    <i class="fab fa-apple me-2"></i>macOS
-                                </button>
-                                <button class="os-btn" data-os="linux">
-                                    <i class="fab fa-linux me-2"></i>Linux
-                                </button>
-                                <button class="os-btn" data-os="android">
-                                    <i class="fab fa-android me-2"></i>Android
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div id="torDownloadInfo" class="mt-4" style="display: none;">
-                            <h5 id="torOSName" class="mb-3"></h5>
-                            <p id="torGuide" class="mb-3"></p>
-                            <button id="torDownloadBtn" class="btn btn-primary">
-                                <i class="fas fa-download me-2"></i>Download Tor Browser
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Windows -->
+                <button onclick="openTorModal('windows')" class="tor-download-btn flex flex-col items-center p-4 bg-gray-900 hover:bg-blue-900/30 rounded-lg transition-all">
+                    <i class="fab fa-windows text-4xl text-blue-400 mb-2"></i>
+                    <span>Windows</span>
+                </button>
+                
+                <!-- macOS -->
+                <button onclick="openTorModal('macos')" class="tor-download-btn flex flex-col items-center p-4 bg-gray-900 hover:bg-gray-800 rounded-lg transition-all">
+                    <i class="fab fa-apple text-4xl text-gray-300 mb-2"></i>
+                    <span>macOS</span>
+                </button>
+                
+                <!-- Linux -->
+                <button onclick="openTorModal('linux')" class="tor-download-btn flex flex-col items-center p-4 bg-gray-900 hover:bg-yellow-700/30 rounded-lg transition-all">
+                    <i class="fab fa-linux text-4xl text-yellow-400 mb-2"></i>
+                    <span>Linux</span>
+                </button>
+                
+                <!-- Android -->
+                <button onclick="openTorModal('android')" class="tor-download-btn flex flex-col items-center p-4 bg-gray-900 hover:bg-green-800/30 rounded-lg transition-all">
+                    <i class="fab fa-android text-4xl text-green-400 mb-2"></i>
+                    <span>Android</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="p-6 bg-gray-800 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-bold mb-8 text-center text-pink-400">About Hackpace</h2>
+            <p class="text-lg text-gray-300 mb-10 text-center max-w-3xl mx-auto">
+                Hackpace is a community-operated physical space where innovators, makers, and hackers collaborate on projects, share knowledge, and push the boundaries of technology. Our mission is to provide accessible resources and foster a inclusive environment for creative technological exploration[citation:1][citation:5].
+            </p>
             
-            <!-- About Section -->
-            <section id="about" class="mt-5">
-                <div class="about-section">
-                    <div class="about-header">
-                        <h2 class="text-center"><i class="fas fa-info-circle me-2"></i>About Hackpace</h2>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <p class="lead">Hackpace is a thriving community platform for developers, hackers, and technology enthusiasts to collaborate, learn, and innovate together.</p>
-                            
-                            <h4 class="mt-4">Our Mission</h4>
-                            <p>Founded in 2020, Hackpace was created with the mission to provide a secure, inclusive environment where developers of all skill levels can share knowledge, work on open-source projects, and push the boundaries of technology.</p>
-                            
-                            <h4 class="mt-4">What We Offer</h4>
-                            <ul>
-                                <li>Secure collaboration tools for developer teams</li>
-                                <li>Regular hackathons and coding challenges</li>
-                                <li>Knowledge sharing through workshops and tutorials</li>
-                                <li>Open-source project incubation</li>
-                                <li>Networking opportunities with industry professionals</li>
-                            </ul>
-                            
-                            <h4 class="mt-4">Our Values</h4>
-                            <p>At Hackpace, we believe in the power of open collaboration, continuous learning, and ethical hacking. We maintain a strong commitment to privacy and security, ensuring that our members can focus on innovation without concerns about their data or projects.</p>
-                            
-                            <div class="text-center mt-5">
-                                <div class="row">
-                                    <div class="col-md-4 mb-4">
-                                        <div class="feature-card">
-                                            <a href="https://tiktok.com/yourprofile" target="_blank" class="text-decoration-none">
-                                                <i class="fab fa-tiktok stats-icon" style="color: #ff0050;"></i>
-                                                <h4>10,000+</h4>
-                                                <p>Active Community Members</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <div class="feature-card">
-                                            <a href="https://github.com/yourprofile" target="_blank" class="text-decoration-none">
-                                                <i class="fab fa-github stats-icon" style="color: #6cc644;"></i>
-                                                <h4>350+</h4>
-                                                <p>Projects Launched</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <div class="feature-card">
-                                            <a href="https://youtube.com/yourchannel" target="_blank" class="text-decoration-none">
-                                                <i class="fab fa-youtube stats-icon" style="color: #ff0000;"></i>
-                                                <h4>120+</h4>
-                                                <p>Workshops Hosted</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="feature-card">
-                                            <a href="https://t.me/yourchannel" target="_blank" class="text-decoration-none">
-                                                <i class="fab fa-telegram stats-icon" style="color: #0088cc;"></i>
-                                                <h4>100+</h4>
-                                                <p>Telegram Community</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="feature-card">
-                                            <a href="https://facebook.com/yourpage" target="_blank" class="text-decoration-none">
-                                                <i class="fab fa-facebook stats-icon" style="color: #3b5998;"></i>
-                                                <h4>2,000+</h4>
-                                                <p>Facebook Followers</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Community Stat -->
+                <a href="https://tiktok.com/yourprofile" target="_blank" class="social-stat group p-6 bg-gradient-to-br from-purple-900/50 to-pink-900/50 rounded-lg text-center transition-all hover:from-purple-900/70 hover:to-pink-900/70">
+                    <i class="fab fa-tiktok text-4xl text-pink-300 mb-3 group-hover:text-white"></i>
+                    <h3 class="text-2xl font-bold">10,000+</h3>
+                    <p class="text-gray-300 group-hover:text-white">Active Community</p>
+                </a>
+                
+                <!-- Projects Stat -->
+                <a href="https://github.com/yourprofile" target="_blank" class="social-stat group p-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg text-center transition-all hover:from-gray-800 hover:to-gray-700">
+                    <i class="fab fa-github text-4xl text-gray-300 mb-3 group-hover:text-white"></i>
+                    <h3 class="text-2xl font-bold">350+</h3>
+                    <p class="text-gray-300 group-hover:text-white">Projects Launched</p>
+                </a>
+                
+                <!-- Workshops Stat -->
+                <a href="https://youtube.com/yourchannel" target="_blank" class="social-stat group p-6 bg-gradient-to-br from-red-900/50 to-red-800/50 rounded-lg text-center transition-all hover:from-red-900/70 hover:to-red-800/70">
+                    <i class="fab fa-youtube text-4xl text-red-400 mb-3 group-hover:text-white"></i>
+                    <h3 class="text-2xl font-bold">120+</h3>
+                    <p class="text-gray-300 group-hover:text-white">Workshops Hosted</p>
+                </a>
+                
+                <!-- Telegram Stat -->
+                <a href="https://t.me/yourchannel" target="_blank" class="social-stat group p-6 bg-gradient-to-br from-blue-900/50 to-blue-700/50 rounded-lg text-center transition-all hover:from-blue-900/70 hover:to-blue-700/70">
+                    <i class="fab fa-telegram text-4xl text-blue-400 mb-3 group-hover:text-white"></i>
+                    <h3 class="text-2xl font-bold">100+</h3>
+                    <p class="text-gray-300 group-hover:text-white">Telegram Members</p>
+                </a>
+                
+                <!-- Facebook Stat -->
+                <a href="https://facebook.com/yourpage" target="_blank" class="social-stat group p-6 bg-gradient-to-br from-blue-800/50 to-blue-600/40 rounded-lg text-center transition-all hover:from-blue-800/70 hover:to-blue-600/60">
+                    <i class="fab fa-facebook text-4xl text-blue-400 mb-3 group-hover:text-white"></i>
+                    <h3 class="text-2xl font-bold">2,000+</h3>
+                    <p class="text-gray-300 group-hover:text-white">Facebook Followers</p>
+                </a>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="container">
-            <div class="d-flex justify-content-center mb-3">
-                <a href="https://tiktok.com/yourprofile" class="social-icon"><i class="fab fa-tiktok"></i></a>
-                <a href="https://wa.me/yournumber" class="social-icon"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://facebook.com/yourpage" class="social-icon"><i class="fab fa-facebook"></i></a>
-                <a href="https://t.me/yourchannel" class="social-icon"><i class="fab fa-telegram"></i></a>
-                <a href="https://twitter.com/yourprofile" class="social-icon"><i class="fab fa-x-twitter"></i></a>
-                <a href="https://github.com/yourprofile" class="social-icon"><i class="fab fa-github"></i></a>
+    <!-- Tor Modal -->
+    <div id="torModal" class="modal fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50 opacity-0 pointer-events-none">
+        <div class="bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full mx-4 overflow-hidden">
+            <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                <h3 id="modalTitle" class="text-2xl font-bold"></h3>
+                <button onclick="closeTorModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
             </div>
-            <div class="text-center">
-                <p>&copy; 2023 Hackpace. All rights reserved.</p>
+            <div class="p-6">
+                <div id="modalContent"></div>
+            </div>
+            <div class="flex justify-end p-6 border-t border-gray-700">
+                <button id="downloadButton" class="px-6 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg font-medium">
+                    Download Tor Browser
+                </button>
             </div>
         </div>
+    </div>
+
+    <footer class="container mx-auto px-4 py-12 text-center text-gray-400">
+        <p>© 2025 Hackpace. All rights reserved.</p>
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const generateBtn = document.getElementById('generateBtn');
-            const linkOutput = document.getElementById('linkOutput');
-            const progressBar = document.getElementById('progressBar');
-            const statusText = document.getElementById('statusText');
-            const maskedLink = document.getElementById('maskedLink');
-            const copyBtn = document.getElementById('copyBtn');
-            
-            // Base URL for the generated link
-            const baseUrl = 'https://hackpace.io/join/';
-            let generatedLink = '';
-            let isRevealed = false;
-            
-            // Generate link button
-            generateBtn.addEventListener('click', function() {
-                // Show the output section
-                linkOutput.style.display = 'block';
-                
-                // Disable the button during generation
-                generateBtn.disabled = true;
-                generateBtn.style.opacity = '0.7';
-                
-                // Start the generation process with a progress animation
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 5;
-                    progressBar.style.width = `${progress}%`;
-                    
-                    if (progress === 25) {
-                        statusText.textContent = "Generating secure token...";
-                    } else if (progress === 50) {
-                        statusText.textContent = "Encrypting your access link...";
-                    } else if (progress === 75) {
-                        statusText.textContent = "Applying security masking...";
-                    } else if (progress >= 100) {
-                        clearInterval(interval);
-                        
-                        // Generate a random code for the link
-                        const randomCode = Math.random().toString(36).substring(2, 10);
-                        generatedLink = baseUrl + randomCode;
-                        
-                        // Create a masked version
-                        const masked = maskLink(generatedLink);
-                        maskedLink.textContent = masked;
-                        maskedLink.title = "Click to reveal the link";
-                        
-                        // Show the completed section
-                        statusText.innerHTML = `<span class="text-success">Secure link generated successfully!</span>`;
-                        
-                        // Re-enable the generate button
-                        generateBtn.disabled = false;
-                        generateBtn.style.opacity = '1';
-                        
-                        // Scroll to the completed section
-                        linkOutput.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }, 200);
+        // Copy functionality for code link
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const codeLink = document.getElementById('codeLink').textContent;
+            navigator.clipboard.writeText(codeLink).then(() => {
+                const feedback = document.getElementById('copyFeedback');
+                feedback.classList.remove('hidden');
+                setTimeout(() => {
+                    feedback.classList.add('hidden');
+                }, 2000);
             });
+        });
+
+        // Tor Modal functionality
+        function openTorModal(os) {
+            const modal = document.getElementById('torModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+            const downloadButton = document.getElementById('downloadButton');
             
-            // Function to mask a link (show only first and last few characters)
-            function maskLink(link) {
-                if (link.length <= 20) return link;
-                
-                const visibleChars = 6;
-                const firstPart = link.substring(0, visibleChars);
-                const lastPart = link.substring(link.length - visibleChars);
-                const middle = '*'.repeat(12);
-                
-                return firstPart + middle + lastPart;
-            }
-            
-            // Masked link click to reveal functionality
-            maskedLink.addEventListener('click', function() {
-                if (!isRevealed) {
-                    maskedLink.textContent = generatedLink;
-                    maskedLink.classList.add('text-success');
-                    copyBtn.style.display = 'block';
-                    isRevealed = true;
-                }
-            });
-            
-            // Copy button functionality
-            copyBtn.addEventListener('click', function() {
-                // Copy the generated link to clipboard
-                navigator.clipboard.writeText(generatedLink)
-                    .then(() => {
-                        // Change button icon temporarily
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
-                        
-                        setTimeout(() => {
-                            copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
-                        }, 2000);
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy: ', err);
-                        alert('Failed to copy link. Please try again.');
-                    });
-            });
-            
-            // Tor browser download functionality
-            const osButtons = document.querySelectorAll('.os-btn');
-            const torDownloadInfo = document.getElementById('torDownloadInfo');
-            const torOSName = document.getElementById('torOSName');
-            const torGuide = document.getElementById('torGuide');
-            const torDownloadBtn = document.getElementById('torDownloadBtn');
-            
-            const torInfo = {
-                windows: {
-                    name: "Windows",
-                    guide: "Download the EXE file and run the installer. Follow the setup wizard instructions.",
-                    url: "#"
-                },
-                mac: {
-                    name: "macOS",
-                    guide: "Download the DMG file, open it, and drag Tor Browser to your Applications folder.",
-                    url: "#"
-                },
-                linux: {
-                    name: "Linux",
-                    guide: "Download the tar.xz file, extract it, and run the start-tor-browser script.",
-                    url: "#"
-                },
-                android: {
-                    name: "Android",
-                    guide: "Download the APK file and install it. Enable installation from unknown sources if needed.",
-                    url: "#"
-                }
+            // Set download URLs based on OS [citation:4]
+            const downloadUrls = {
+                windows: 'https://www.torproject.org/dist/torbrowser/13.0.16/torbrowser-install-win64-13.0.16.exe',
+                macos: 'https://www.torproject.org/dist/torbrowser/13.0.16/tor-browser-macos-13.0.16.dmg',
+                linux: 'https://www.torproject.org/dist/torbrowser/13.0.16/tor-browser-linux-x86_64-13.0.16.tar.xz',
+                android: 'https://www.torproject.org/dist/torbrowser/13.0.16/tor-browser-android-13.0.16.apk'
             };
             
-            osButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const os = this.getAttribute('data-os');
-                    const info = torInfo[os];
-                    
-                    // Update UI with OS-specific info
-                    torOSName.textContent = `Download for ${info.name}`;
-                    torGuide.textContent = info.guide;
-                    torDownloadBtn.setAttribute('data-url', info.url);
-                    
-                    // Show download info
-                    torDownloadInfo.style.display = 'block';
-                    
-                    // Highlight selected OS button
-                    osButtons.forEach(btn => btn.style.borderColor = '#4a4a4a');
-                    this.style.borderColor = '#6e45e2';
-                });
-            });
+            // Set content based on OS [citation:4]
+            const osContent = {
+                windows: `
+                    <p class="mb-4">To install Tor Browser on Windows:</p>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li>Download the Windows .exe file</li>
+                        <li>(Recommended) Verify the file's signature</li>
+                        <li>Double-click the .exe file after download completes</li>
+                        <li>Complete the installation wizard process</li>
+                    </ol>
+                    <p class="mt-4 text-sm text-gray-400">Note: Support for Windows 7, 8, and 8.1 is discontinued with Tor Browser 14. Users on these systems should download Tor Browser 13.5 for security updates until September 2025.</p>
+                `,
+                macos: `
+                    <p class="mb-4">To install Tor Browser on macOS:</p>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li>Download the macOS .dmg file</li>
+                        <li>(Recommended) Verify the file's signature</li>
+                        <li>Double-click the .dmg file after download completes</li>
+                        <li>Complete the installation wizard process</li>
+                    </ol>
+                    <p class="mt-4 text-sm text-gray-400">Note: Support for macOS 10.12 to 10.14 is discontinued with Tor Browser 14. Users on these systems should download Tor Browser 13.5 for security updates until September 2025.</p>
+                `,
+                linux: `
+                    <p class="mb-4">To install Tor Browser on Linux:</p>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li>Download the Linux .tar.xz file</li>
+                        <li>(Recommended) Verify the file's signature</li>
+                        <li>Extract the archive using an archive manager or with the command: <code class="bg-gray-900 p-1 rounded">tar -xf [TB archive]</code></li>
+                        <li>Navigate to the Tor Browser directory and run: <code class="bg-gray-900 p-1 rounded">./start-tor-browser.desktop</code></li>
+                    </ol>
+                    <p class="mt-4">If the command fails, make the file executable: <code class="bg-gray-900 p-1 rounded">chmod +x start-tor-browser.desktop</code></p>
+                `,
+                android: `
+                    <p class="mb-4">To install Tor Browser on Android:</p>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li>Download the Tor Browser APK file</li>
+                        <li>Enable installation from unknown sources in your Android settings</li>
+                        <li>Open the downloaded APK file to begin installation</li>
+                        <li>Follow the on-screen instructions to complete installation</li>
+                    </ol>
+                    <p class="mt-4 text-sm text-gray-400">Note: You can also find Tor Browser on the Google Play Store, but downloading directly from the official site ensures you have the latest version.</p>
+                `
+            };
             
-            // Tor download button
-            torDownloadBtn.addEventListener('click', function() {
-                const url = this.getAttribute('data-url');
-                alert('In a real implementation, this would download the Tor browser. URL: ' + url);
-                // In a real implementation, you would trigger the download here
-            });
+            // Set modal content based on OS
+            title.textContent = `Download Tor for ${os.charAt(0).toUpperCase() + os.slice(1)}`;
+            content.innerHTML = osContent[os];
+            
+            // Set download button action
+            downloadButton.onclick = function() {
+                window.location.href = downloadUrls[os];
+            };
+            
+            // Show modal
+            modal.classList.remove('pointer-events-none');
+            modal.classList.add('opacity-100');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeTorModal() {
+            const modal = document.getElementById('torModal');
+            modal.classList.add('pointer-events-none');
+            modal.classList.remove('opacity-100');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal if clicked outside content
+        document.getElementById('torModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTorModal();
+            }
         });
     </script>
 </body>
