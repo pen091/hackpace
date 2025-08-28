@@ -1,490 +1,437 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackpace - Secure Developer Community</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
+    <title>Hackpace - Secure Link Sharing</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#6e45e2',
-                        secondary: '#88d3ce',
-                        darkbg: '#0a0a0a',
-                        carddark: '#1a1a1a',
-                    },
-                    animation: {
-                        'dance': 'dance 2s infinite alternate',
-                    },
-                    keyframes: {
-                        dance: {
-                            '0%': { transform: 'translateY(0) rotate(0deg)' },
-                            '25%': { transform: 'translateY(-5px) rotate(-1deg)' },
-                            '50%': { transform: 'translateY(0) rotate(0deg)' },
-                            '75%': { transform: 'translateY(-5px) rotate(1deg)' },
-                            '100%': { transform: 'translateY(0) rotate(0deg)' },
-                        }
-                    }
-                }
-            }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    </script>
-    <style type="text/css">
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+            background: linear-gradient(135deg, #0c0c0c, #1a1a1a, #2a2a2a);
+            color: #fff;
             min-height: 100vh;
+            font-family: 'Roboto Mono', monospace;
         }
-        .tor-modal {
+        
+        .dance-text {
+            animation: dance 2s infinite;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px #fdbb2d, 0 0 20px #b21f1f;
+        }
+        
+        @keyframes dance {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            25% { transform: translateY(-5px) rotate(-1deg); }
+            50% { transform: translateY(0) rotate(1deg); }
+            75% { transform: translateY(5px) rotate(-1deg); }
+        }
+        
+        .card {
+            background: rgba(40, 40, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tor-icon {
+            color: #7e4799;
+        }
+        
+        .copy-btn {
             transition: all 0.3s ease;
         }
-        .progress-bar {
-            transition: width 0.5s ease;
+        
+        .copy-btn:hover {
+            transform: scale(1.1);
         }
+        
+        .os-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .os-btn:hover {
+            transform: translateY(-5px);
+            border-color: #fdbb2d;
+        }
+        
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .notification {
+            transform: translateX(100vw);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .guide-content {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
         /* Custom scrollbar */
-        ::-webkit-scrollbar {
+        .guide-content::-webkit-scrollbar {
             width: 8px;
         }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
+        
+        .guide-content::-webkit-scrollbar-track {
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 10px;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #6e45e2;
-            border-radius: 4px;
+        
+        .guide-content::-webkit-scrollbar-thumb {
+            background: #fdbb2d;
+            border-radius: 10px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #88d3ce;
+        
+        .guide-content::-webkit-scrollbar-thumb:hover {
+            background: #b21f1f;
         }
     </style>
 </head>
-<body class="bg-darkbg text-gray-100 min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-darkbg py-4 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <nav class="flex items-center justify-between">
-                <a href="#" class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-dance">
-                    Hackpace
-                </a>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="hover:text-primary transition-colors">Home</a>
-                    <a href="#about" class="hover:text-primary transition-colors">About</a>
-                    <a href="#tor" class="hover:text-primary transition-colors">Tor</a>
-                    <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
-                </div>
-                <button class="md:hidden text-xl">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 py-8">
-        <!-- Home Section -->
-        <section id="home" class="mb-16">
-            <div class="text-center max-w-3xl mx-auto">
-                <h1 class="text-5xl md:text-6xl font-bold mb-6">Welcome to <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Hackpace</span></h1>
-                <p class="text-xl text-gray-400 mb-10">Generate secure access links with our advanced system</p>
-                
-                <div class="mb-12">
-                    <button id="generateBtn" class="w-40 h-40 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                        <i class="fas fa-link text-white text-5xl"></i>
-                    </button>
-                    <p class="mt-4 text-gray-400">Click to generate your secure link</p>
-                </div>
-                
-                <div id="linkOutput" class="bg-carddark rounded-xl p-8 shadow-xl border-l-4 border-primary hidden">
-                    <h3 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-lock mr-2 text-primary"></i> Your Secure Generated Link</h3>
-                    <div class="w-full bg-gray-800 rounded-full h-2.5 mb-4">
-                        <div id="progressBar" class="progress-bar h-2.5 rounded-full bg-gradient-to-r from-primary to-secondary" style="width: 0%"></div>
-                    </div>
-                    <p id="statusText" class="text-center mb-6">Generating your secure access link...</p>
-                    
-                    <div id="completedSection" class="text-center">
-                        <p class="mb-4">Your secure link is ready! Click to reveal:</p>
-                        <div id="maskedLink" class="bg-gray-800 px-6 py-4 rounded-lg font-mono text-lg cursor-pointer inline-block mb-6 hover:bg-gray-700 transition-colors"></div>
-                        <br>
-                        <button id="copyBtn" class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hidden">
-                            <i class="fas fa-copy text-white text-2xl"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+<body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 dance-text">HACKPACE</h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+                Secure link sharing with privacy protection and Tor integration
+            </p>
+        </header>
         
-        <!-- Tor Browser Section -->
-        <section id="tor" class="mb-16 bg-gradient-to-r from-purple-900/30 to-cyan-900/30 rounded-2xl p-8 border border-gray-800">
-            <div class="text-center">
-                <i class="fab fa-tor-onion text-5xl text-purple-500 mb-6"></i>
-                <h2 class="text-4xl font-bold mb-4">Download Tor Browser</h2>
-                <p class="text-xl text-gray-400 mb-8">Enhance your privacy and security with Tor Browser</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- URL Masking Card -->
+            <div class="card p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-yellow-400">
+                    <i class="fas fa-link"></i> Secure Link Generator
+                </h2>
                 
-                <div class="mb-8">
-                    <h3 class="text-2xl font-bold mb-6">Select your operating system:</h3>
-                    <div class="flex flex-wrap justify-center gap-4">
-                        <button data-os="windows" class="os-btn bg-carddark px-6 py-4 rounded-xl border border-gray-800 hover:border-primary transition-colors flex items-center">
-                            <i class="fab fa-windows text-blue-400 text-2xl mr-3"></i> Windows
-                        </button>
-                        <button data-os="mac" class="os-btn bg-carddark px-6 py-4 rounded-xl border border-gray-800 hover:border-primary transition-colors flex items-center">
-                            <i class="fab fa-apple text-gray-300 text-2xl mr-3"></i> macOS
-                        </button>
-                        <button data-os="linux" class="os-btn bg-carddark px-6 py-4 rounded-xl border border-gray-800 hover:border-primary transition-colors flex items-center">
-                            <i class="fab fa-linux text-amber-500 text-2xl mr-3"></i> Linux
-                        </button>
-                        <button data-os="android" class="os-btn bg-carddark px-6 py-4 rounded-xl border border-gray-800 hover:border-primary transition-colors flex items-center">
-                            <i class="fab fa-android text-emerald-400 text-2xl mr-3"></i> Android
-                        </button>
+                <div class="mb-6">
+                    <p class="text-gray-300 mb-4">Click to generate a secure masked link:</p>
+                    <button id="generate-btn" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-red-700 rounded-lg font-semibold flex items-center justify-center gap-2">
+                        <i class="fas fa-magic"></i> Generate Secure Link
+                    </button>
+                </div>
+                
+                <div class="link-display flex items-center gap-3 mb-6 p-4 bg-gray-900 rounded-lg border border-gray-700">
+                    <input type="text" id="masked-url" class="flex-1 bg-transparent text-white py-2 px-3 rounded border border-gray-700" readonly placeholder="Your secure link will appear here">
+                    <button id="copy-btn" class="copy-btn w-12 h-12 rounded-full bg-blue-800 flex items-center justify-center">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Features:</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-user-secret text-yellow-400"></i>
+                            <span>Automatic secure link generation</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-ban text-yellow-400"></i>
+                            <span>No tracking or logging</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-bolt text-yellow-400"></i>
+                            <span>One-click copy functionality</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tor Download Card -->
+            <div class="card p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-yellow-400">
+                    <i class="fab fa-tor-browser"></i> Download Tor Browser
+                </h2>
+                
+                <p class="text-gray-300 mb-6">Select your operating system to download Tor browser and browse anonymously:</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="os-btn p-4 text-center rounded-lg bg-gray-900 border border-gray-700 cursor-pointer" data-os="windows">
+                        <i class="fab fa-windows text-3xl mb-2 text-yellow-400"></i>
+                        <span>Windows</span>
+                    </div>
+                    <div class="os-btn p-4 text-center rounded-lg bg-gray-900 border border-gray-700 cursor-pointer" data-os="mac">
+                        <i class="fab fa-apple text-3xl mb-2 text-yellow-400"></i>
+                        <span>macOS</span>
+                    </div>
+                    <div class="os-btn p-4 text-center rounded-lg bg-gray-900 border border-gray-700 cursor-pointer" data-os="linux">
+                        <i class="fab fa-linux text-3xl mb-2 text-yellow-400"></i>
+                        <span>Linux</span>
+                    </div>
+                    <div class="os-btn p-4 text-center rounded-lg bg-gray-900 border border-gray-700 cursor-pointer" data-os="android">
+                        <i class="fab fa-android text-3xl mb-2 text-yellow-400"></i>
+                        <span>Android</span>
                     </div>
                 </div>
                 
-                <div id="torDownloadInfo" class="bg-carddark rounded-xl p-6 mt-8 hidden">
-                    <h4 id="torOSName" class="text-2xl font-bold mb-4"></h4>
-                    <p id="torGuide" class="text-gray-400 mb-6"></p>
-                    <button id="torDownloadBtn" class="bg-gradient-to-r from-primary to-secondary px-6 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity">
-                        <i class="fas fa-download mr-2"></i> Download Tor Browser
-                    </button>
+                <div class="guide-content p-4 bg-gray-900 rounded-lg border border-gray-700 mb-6">
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Installation Guide</h3>
+                    <p class="text-gray-300">Select your operating system to view installation instructions</p>
                 </div>
+                
+                <button id="download-btn" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-red-700 rounded-lg font-semibold flex items-center justify-center gap-2">
+                    <i class="fas fa-download"></i> Download Tor Browser
+                </button>
             </div>
-        </section>
+        </div>
         
         <!-- About Section -->
-        <section id="about" class="mb-16 bg-carddark rounded-2xl p-8 shadow-xl">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4"><i class="fas fa-info-circle mr-2 text-primary"></i> About Hackpace</h2>
-                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Hackpace is a thriving community platform for developers, hackers, and technology enthusiasts to collaborate, learn, and innovate together.</p>
-            </div>
+        <div class="card p-6 md:p-8 mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-yellow-400">
+                <i class="fas fa-user"></i> About Me
+            </h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <div>
-                    <h3 class="text-2xl font-bold mb-4 text-primary">Our Mission</h3>
-                    <p class="text-gray-400 mb-6">Founded in 2020, Hackpace was created with the mission to provide a secure, inclusive environment where developers of all skill levels can share knowledge, work on open-source projects, and push the boundaries of technology.</p>
-                    
-                    <h3 class="text-2xl font-bold mb-4 text-primary">What We Offer</h3>
-                    <ul class="text-gray-400 list-disc list-inside space-y-2">
-                        <li>Secure collaboration tools for developer teams</li>
-                        <li>Regular hackathons and coding challenges</li>
-                        <li>Knowledge sharing through workshops and tutorials</li>
-                        <li>Open-source project incubation</li>
-                        <li>Networking opportunities with industry professionals</li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-2xl font-bold mb-4 text-primary">Our Values</h3>
-                    <p class="text-gray-400 mb-6">At Hackpace, we believe in the power of open collaboration, continuous learning, and ethical hacking. We maintain a strong commitment to privacy and security, ensuring that our members can focus on innovation without concerns about their data or projects.</p>
-                    
-                    <h3 class="text-2xl font-bold mb-4 text-primary">Community Impact</h3>
-                    <p class="text-gray-400">Our community has made significant contributions to open-source projects, cybersecurity research, and digital privacy advocacy. We believe in using technology to make a positive impact on society.</p>
-                </div>
-            </div>
+            <p class="text-gray-300 mb-8">
+                With over 5 years of experience in cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone, regardless of their technical background. I believe in empowering users to take control of their online privacy.
+            </p>
             
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
-                <a href="https://tiktok.com/yourprofile" target="_blank" class="bg-gradient-to-br from-purple-900 to-carddark p-6 rounded-xl hover:scale-105 transition-transform">
-                    <i class="fab fa-tiktok text-4xl text-[#ff0050] mb-4"></i>
-                    <h4 class="text-2xl font-bold">10,000+</h4>
-                    <p class="text-gray-400">Active Community</p>
-                </a>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
+                    <i class="fab fa-tiktok text-4xl mb-3 text-yellow-400"></i>
+                    <h3 class="text-2xl font-bold mb-1">10,000+</h3>
+                    <p class="text-gray-300 mb-3">Active Community</p>
+                    <a href="https://tiktok.com/@yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                        <i class="fab fa-tiktok"></i> Follow
+                    </a>
+                </div>
                 
-                <a href="https://github.com/yourprofile" target="_blank" class="bg-gradient-to-br from-gray-900 to-carddark p-6 rounded-xl hover:scale-105 transition-transform">
-                    <i class="fab fa-github text-4xl text-[#6cc644] mb-4"></i>
-                    <h4 class="text-2xl font-bold">350+</h4>
-                    <p class="text-gray-400">Projects Launched</p>
-                </a>
+                <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
+                    <i class="fab fa-github text-4xl mb-3 text-yellow-400"></i>
+                    <h3 class="text-2xl font-bold mb-1">350+</h3>
+                    <p class="text-gray-300 mb-3">Projects Launched</p>
+                    <a href="https://github.com/yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                        <i class="fab fa-github"></i> View
+                    </a>
+                </div>
                 
-                <a href="https://youtube.com/yourchannel" target="_blank" class="bg-gradient-to-br from-red-900 to-carddark p-6 rounded-xl hover:scale-105 transition-transform">
-                    <i class="fab fa-youtube text-4xl text-[#ff0000] mb-4"></i>
-                    <h4 class="text-2xl font-bold">120+</h4>
-                    <p class="text-gray-400">Workshops Hosted</p>
-                </a>
+                <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
+                    <i class="fab fa-youtube text-4xl mb-3 text-yellow-400"></i>
+                    <h3 class="text-2xl font-bold mb-1">120+</h3>
+                    <p class="text-gray-300 mb-3">Workshops Hosted</p>
+                    <a href="https://youtube.com/yourchannel" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                        <i class="fab fa-youtube"></i> Watch
+                    </a>
+                </div>
                 
-                <a href="https://t.me/yourchannel" target="_blank" class="bg-gradient-to-br from-blue-900 to-carddark p-6 rounded-xl hover:scale-105 transition-transform">
-                    <i class="fab fa-telegram text-4xl text-[#0088cc] mb-4"></i>
-                    <h4 class="text-2xl font-bold">100+</h4>
-                    <p class="text-gray-400">Telegram Community</p>
-                </a>
+                <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
+                    <i class="fab fa-telegram text-4xl mb-3 text-yellow-400"></i>
+                    <h3 class="text-2xl font-bold mb-1">100+</h3>
+                    <p class="text-gray-300 mb-3">Telegram Members</p>
+                    <a href="https://t.me/yourchannel" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                        <i class="fab fa-telegram"></i> Join
+                    </a>
+                </div>
                 
-                <a href="https://facebook.com/yourpage" target="_blank" class="bg-gradient-to-br from-blue-800 to-carddark p-6 rounded-xl hover:scale-105 transition-transform">
-                    <i class="fab fa-facebook text-4xl text-[#3b5998] mb-4"></i>
-                    <h4 class="text-2xl font-bold">2,000+</h4>
-                    <p class="text-gray-400">Facebook Followers</p>
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer id="contact" class="bg-darkbg py-8 border-t border-gray-800">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-center space-x-8 mb-6">
-                <a href="https://tiktok.com/yourprofile" class="text-2xl text-gray-400 hover:text-[#ff0050] transition-colors"><i class="fab fa-tiktok"></i></a>
-                <a href="https://wa.me/yournumber" class="text-2xl text-gray-400 hover:text-[#25D366] transition-colors"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://facebook.com/yourpage" class="text-2xl text-gray-400 hover:text-[#3b5998] transition-colors"><i class="fab fa-facebook"></i></a>
-                <a href="https://t.me/yourchannel" class="text-2xl text-gray-400 hover:text-[#0088cc] transition-colors"><i class="fab fa-telegram"></i></a>
-                <a href="https://twitter.com/yourprofile" class="text-2xl text-gray-400 hover:text-[#1DA1F2] transition-colors"><i class="fab fa-x-twitter"></i></a>
-                <a href="https://github.com/yourprofile" class="text-2xl text-gray-400 hover:text-[#6cc644] transition-colors"><i class="fab fa-github"></i></a>
-            </div>
-            <p class="text-center text-gray-500">&copy; 2023 Hackpace. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Tor Modals -->
-    <div id="windowsModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden tor-modal">
-        <div class="bg-carddark rounded-2xl p-8 max-w-2xl mx-4 max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold flex items-center"><i class="fab fa-windows text-blue-400 mr-2"></i> Windows Installation Guide</h3>
-                <button class="close-modal text-2xl hover:text-primary">&times;</button>
-            </div>
-            <div class="space-y-4">
-                <p>Tor Browser is based on Mozilla Firefox's ESR (Extended Support Release), which periodically updates to include critical security updates from Firefox's main version. [citation:1]</p>
-                
-                <h4 class="text-xl font-bold mt-6 mb-2">Installation Steps:</h4>
-                <ol class="list-decimal list-inside space-y-2">
-                    <li>Navigate to the Tor Browser download page. [citation:1]</li>
-                    <li>Download the Windows <code>.exe</code> file. [citation:1]</li>
-                    <li>(Recommended) Verify the file's signature. [citation:1]</li>
-                    <li>When the download is complete, double click the <code>.exe</code> file. [citation:1]</li>
-                    <li>Complete the installation wizard process. [citation:1]</li>
-                </ol>
-                
-                <div class="bg-gray-800 p-4 rounded-lg mt-4">
-                    <h5 class="font-bold mb-2">Note:</h5>
-                    <p>Support for Windows 7, 8, and 8.1 is discontinued with Tor Browser 14. Users on these legacy operating systems will continue to receive security updates for Tor Browser 13.5 until at least September 2025. [citation:1]</p>
+                <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
+                    <i class="fab fa-facebook text-4xl mb-3 text-yellow-400"></i>
+                    <h3 class="text-2xl font-bold mb-1">2,000+</h3>
+                    <p class="text-gray-300 mb-3">Active Facebook</p>
+                    <a href="https://facebook.com/yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                        <i class="fab fa-facebook"></i> Follow
+                    </a>
                 </div>
             </div>
         </div>
+        
+        <!-- Footer -->
+        <footer class="text-center pt-8 border-t border-gray-800">
+            <p class="text-gray-400">© 2023 Hackpace | Privacy Protection Tools</p>
+            <p class="text-gray-500 text-sm mt-2">All rights reserved</p>
+        </footer>
     </div>
-
-    <div id="macModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden tor-modal">
-        <div class="bg-carddark rounded-2xl p-8 max-w-2xl mx-4 max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold flex items-center"><i class="fab fa-apple text-gray-300 mr-2"></i> macOS Installation Guide</h3>
-                <button class="close-modal text-2xl hover:text-primary">&times;</button>
-            </div>
-            <div class="space-y-4">
-                <p>Tor Browser is available for macOS and provides the same anonymity and privacy features as on other platforms. [citation:1]</p>
-                
-                <h4 class="text-xl font-bold mt-6 mb-2">Installation Steps:</h4>
-                <ol class="list-decimal list-inside space-y-2">
-                    <li>Navigate to the Tor Browser download page. [citation:1]</li>
-                    <li>Download the macOS <code>.dmg</code> file. [citation:1]</li>
-                    <li>(Recommended) Verify the file's signature. [citation:1]</li>
-                    <li>When the download is complete, double click the <code>.dmg</code> file. [citation:1]</li>
-                    <li>Complete the installation wizard process. [citation:1]</li>
-                </ol>
-                
-                <div class="bg-gray-800 p-4 rounded-lg mt-4">
-                    <h5 class="font-bold mb-2">Note:</h5>
-                    <p>Support for macOS 10.12 to 10.14 is discontinued with Tor Browser 14. Users on these legacy operating systems will continue to receive security updates for Tor Browser 13.5 until at least September 2025. [citation:1]</p>
-                </div>
-            </div>
-        </div>
+    
+    <!-- Notification -->
+    <div class="notification fixed top-6 right-6 py-3 px-6 bg-gray-900 rounded-lg shadow-lg border-l-4 border-yellow-500 z-50">
+        Link copied to clipboard!
     </div>
-
-    <div id="linuxModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden tor-modal">
-        <div class="bg-carddark rounded-2xl p-8 max-w-2xl mx-4 max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold flex items-center"><i class="fab fa-linux text-amber-500 mr-2"></i> Linux Installation Guide</h3>
-                <button class="close-modal text-2xl hover:text-primary">&times;</button>
-            </div>
-            <div class="space-y-4">
-                <p>Tor Browser is supported on any modern Linux-based operating system. [citation:1]</p>
-                
-                <h4 class="text-xl font-bold mt-6 mb-2">Installation Steps:</h4>
-                <ol class="list-decimal list-inside space-y-2">
-                    <li>Navigate to the Tor Browser download page. [citation:1]</li>
-                    <li>Download the Linux <code>.tar.xz</code> file. [citation:1]</li>
-                    <li>(Recommended) Verify the file's signature. [citation:6]</li>
-                    <li>Extract the archive using an archive manager or the command line. [citation:1]</li>
-                    <li>Navigate to the Tor Browser directory and run <code>./start-tor-browser.desktop</code>. [citation:1]</li>
-                </ol>
-                
-                <div class="bg-gray-800 p-4 rounded-lg mt-4">
-                    <h5 class="font-bold mb-2">Command Line Method:</h5>
-                    <p>After downloading, extract the archive with: <code class="bg-gray-700 p-1 rounded">tar -xf [TB archive]</code> [citation:1]</p>
-                    <p>From inside the Tor Browser directory, launch with: <code class="bg-gray-700 p-1 rounded">./start-tor-browser.desktop</code> [citation:1]</p>
-                    <p>If this fails, make the file executable: <code class="bg-gray-700 p-1 rounded">chmod +x start-tor-browser.desktop</code> [citation:1]</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="androidModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden tor-modal">
-        <div class="bg-carddark rounded-2xl p-8 max-w-2xl mx-4 max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold flex items-center"><i class="fab fa-android text-emerald-400 mr-2"></i> Android Installation Guide</h3>
-                <button class="close-modal text-2xl hover:text-primary">&times;</button>
-            </div>
-            <div class="space-y-4">
-                <p>Tor Browser for Android requires Android 5.0 or later. [citation:10]</p>
-                
-                <h4 class="text-xl font-bold mt-6 mb-2">Installation Steps:</h4>
-                <ol class="list-decimal list-inside space-y-2">
-                    <li>Visit the official Tor Project website or Google Play Store.</li>
-                    <li>Download the Tor Browser for Android APK file.</li>
-                    <li>Enable installation from unknown sources in your Android settings.</li>
-                    <li>Open the downloaded APK file and complete the installation.</li>
-                    <li>Launch Tor Browser and connect to the Tor network.</li>
-                </ol>
-                
-                <div class="bg-gray-800 p-4 rounded-lg mt-4">
-                    <h5 class="font-bold mb-2">Note:</h5>
-                    <p>For maximum security, download Tor Browser only from official sources like the Tor Project website or official app stores. [citation:3]</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Link generation functionality
-            const generateBtn = document.getElementById('generateBtn');
-            const linkOutput = document.getElementById('linkOutput');
-            const progressBar = document.getElementById('progressBar');
-            const statusText = document.getElementById('statusText');
-            const maskedLink = document.getElementById('maskedLink');
-            const copyBtn = document.getElementById('copyBtn');
+        // URL to be masked (hardcoded as requested)
+        const targetUrl = "https://example.com/your-secure-content";
+        
+        // Link generation functionality
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            // Create a masked version of the URL
+            const maskedUrl = generateMaskedUrl(targetUrl);
+            document.getElementById('masked-url').value = maskedUrl;
             
-            const baseUrl = 'https://hackpace.io/join/';
-            let generatedLink = '';
-            let isRevealed = false;
+            // Show notification
+            showNotification('Secure link generated!');
+        });
+        
+        // Copy functionality
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const maskedUrl = document.getElementById('masked-url');
             
-            generateBtn.addEventListener('click', function() {
-                linkOutput.classList.remove('hidden');
-                generateBtn.disabled = true;
-                generateBtn.classList.add('opacity-70');
-                
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 5;
-                    progressBar.style.width = `${progress}%`;
-                    
-                    if (progress === 25) {
-                        statusText.textContent = "Generating secure token...";
-                    } else if (progress === 50) {
-                        statusText.textContent = "Encrypting your access link...";
-                    } else if (progress === 75) {
-                        statusText.textContent = "Applying security masking...";
-                    } else if (progress >= 100) {
-                        clearInterval(interval);
-                        
-                        const randomCode = Math.random().toString(36).substring(2, 10);
-                        generatedLink = baseUrl + randomCode;
-                        
-                        const masked = maskLink(generatedLink);
-                        maskedLink.textContent = masked;
-                        maskedLink.title = "Click to reveal the link";
-                        
-                        statusText.innerHTML = `<span class="text-green-400">Secure link generated successfully!</span>`;
-                        
-                        generateBtn.disabled = false;
-                        generateBtn.classList.remove('opacity-70');
-                    }
-                }, 200);
-            });
-            
-            function maskLink(link) {
-                if (link.length <= 20) return link;
-                
-                const visibleChars = 6;
-                const firstPart = link.substring(0, visibleChars);
-                const lastPart = link.substring(link.length - visibleChars);
-                const middle = '*'.repeat(12);
-                
-                return firstPart + middle + lastPart;
+            if (!maskedUrl.value) {
+                showNotification('Please generate a link first!', 'error');
+                return;
             }
             
-            maskedLink.addEventListener('click', function() {
-                if (!isRevealed) {
-                    maskedLink.textContent = generatedLink;
-                    maskedLink.classList.add('text-green-400');
-                    copyBtn.classList.remove('hidden');
-                    isRevealed = true;
-                }
+            maskedUrl.select();
+            document.execCommand('copy');
+            
+            // Show notification
+            showNotification('Link copied to clipboard!');
+        });
+        
+        // Tor download functionality
+        const osButtons = document.querySelectorAll('.os-btn');
+        let selectedOS = '';
+        
+        // Sample file sizes for each OS
+        const fileSizes = {
+            windows: '85 MB',
+            mac: '120 MB',
+            linux: '95 MB',
+            android: '25 MB'
+        };
+        
+        osButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                osButtons.forEach(b => b.classList.remove('bg-blue-900', 'border-yellow-400'));
+                this.classList.add('bg-blue-900', 'border-yellow-400');
+                selectedOS = this.getAttribute('data-os');
+                updateGuide(selectedOS);
+                
+                // Update download button text with file size
+                const downloadBtn = document.getElementById('download-btn');
+                downloadBtn.innerHTML = `<i class="fas fa-download"></i> Download for ${this.querySelector('span').textContent} (${fileSizes[selectedOS]})`;
             });
+        });
+        
+        function updateGuide(os) {
+            const guideContent = document.querySelector('.guide-content');
             
-            copyBtn.addEventListener('click', function() {
-                navigator.clipboard.writeText(generatedLink)
-                    .then(() => {
-                        copyBtn.innerHTML = '<i class="fas fa-check text-white text-2xl"></i>';
-                        setTimeout(() => {
-                            copyBtn.innerHTML = '<i class="fas fa-copy text-white text-2xl"></i>';
-                        }, 2000);
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy: ', err);
-                        alert('Failed to copy link. Please try again.');
-                    });
-            });
-            
-            // Tor browser functionality
-            const osButtons = document.querySelectorAll('.os-btn');
-            const torDownloadInfo = document.getElementById('torDownloadInfo');
-            const torOSName = document.getElementById('torOSName');
-            const torGuide = document.getElementById('torGuide');
-            const torDownloadBtn = document.getElementById('torDownloadBtn');
-            const modals = document.querySelectorAll('.tor-modal');
-            const closeButtons = document.querySelectorAll('.close-modal');
-            
-            const torInfo = {
-                windows: {
-                    name: "Windows",
-                    guide: "Download the Windows executable and follow the installation wizard.",
-                    modal: "windowsModal"
-                },
-                mac: {
-                    name: "macOS",
-                    guide: "Download the macOS disk image and drag Tor Browser to your Applications folder.",
-                    modal: "macModal"
-                },
-                linux: {
-                    name: "Linux",
-                    guide: "Download the Linux archive, extract it, and run the start script.",
-                    modal: "linuxModal"
-                },
-                android: {
-                    name: "Android",
-                    guide: "Download the Android APK and enable installation from unknown sources.",
-                    modal: "androidModal"
-                }
+            const guides = {
+                windows: `
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Windows Installation Guide</h3>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                        <li>Download the Tor Browser installer for Windows</li>
+                        <li>Run the downloaded .exe file</li>
+                        <li>Choose your installation language</li>
+                        <li>Select your installation destination</li>
+                        <li>Complete the installation wizard</li>
+                        <li>Launch Tor Browser from your start menu</li>
+                        <li>Connect to the Tor network when prompted</li>
+                    </ol>
+                    <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Windows 8.1 or higher, 64-bit</p>
+                `,
+                mac: `
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">macOS Installation Guide</h3>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                        <li>Download the Tor Browser for macOS</li>
+                        <li>Open the downloaded .dmg file</li>
+                        <li>Drag Tor Browser to your Applications folder</li>
+                        <li>Open Applications and launch Tor Browser</li>
+                        <li>You may need to allow Tor Browser in Security & Privacy settings</li>
+                        <li>Connect to the Tor network when prompted</li>
+                    </ol>
+                    <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> macOS 10.14 or higher</p>
+                `,
+                linux: `
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Linux Installation Guide</h3>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                        <li>Download the Tor Browser for Linux</li>
+                        <li>Extract the downloaded archive with: tar -xvf tor-browser-linux64-*.tar.xz</li>
+                        <li>Navigate to the extracted directory</li>
+                        <li>Run the start script: ./start-tor-browser.desktop</li>
+                        <li>Connect to the Tor network when prompted</li>
+                    </ol>
+                    <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> 64-bit Linux distribution</p>
+                `,
+                android: `
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Android Installation Guide</h3>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                        <li>Download Tor Browser for Android</li>
+                        <li>Open the downloaded APK file</li>
+                        <li>Allow installation from unknown sources if prompted</li>
+                        <li>Complete the installation process</li>
+                        <li>Open the Tor Browser app</li>
+                        <li>Tap "Connect" to establish a connection to the Tor network</li>
+                    </ol>
+                    <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Android 5.0 or higher</p>
+                `
             };
             
-            osButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const os = this.getAttribute('data-os');
-                    const info = torInfo[os];
-                    
-                    torOSName.textContent = `Download for ${info.name}`;
-                    torGuide.textContent = info.guide;
-                    torDownloadInfo.classList.remove('hidden');
-                    
-                    // Show the modal for the selected OS
-                    document.getElementById(info.modal).classList.remove('hidden');
-                });
-            });
+            guideContent.innerHTML = guides[os] || '<h3 class="text-yellow-400 mb-3 text-lg font-semibold">Select your operating system</h3><p class="text-gray-300">Choose your OS to view installation instructions</p>';
+        }
+        
+        document.getElementById('download-btn').addEventListener('click', function() {
+            if (!selectedOS) {
+                showNotification('Please select your operating system first', 'error');
+                return;
+            }
             
-            closeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    modals.forEach(modal => modal.classList.add('hidden'));
-                });
-            });
+            // In a real application, this would point to the actual download URLs
+            const downloadUrls = {
+                windows: 'https://www.torproject.org/dist/torbrowser/12.0.1/torbrowser-install-win64-12.0.1_ALL.exe',
+                mac: 'https://www.torproject.org/dist/torbrowser/12.0.1/TorBrowser-12.0.1-macos_ALL.dmg',
+                linux: 'https://www.torproject.org/dist/torbrowser/12.0.1/tor-browser-linux64-12.0.1_ALL.tar.xz',
+                android: 'https://www.torproject.org/dist/torbrowser/12.0.1/tor-browser-android-12.0.1_ALL.apk'
+            };
             
-            modals.forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        modal.classList.add('hidden');
-                    }
-                });
-            });
+            // Create a temporary anchor element to trigger the download
+            const a = document.createElement('a');
+            a.href = downloadUrls[selectedOS];
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
             
-            torDownloadBtn.addEventListener('click', function() {
-                alert('In a real implementation, this would download the Tor browser for the selected OS.');
-            });
+            // Show notification
+            showNotification(`Downloading Tor for ${selectedOS}...`);
+        });
+        
+        // Helper functions
+        function generateMaskedUrl(url) {
+            // Create a masked version of the URL
+            const domain = url.split('//')[1].split('/')[0];
+            const path = url.split(domain)[1];
+            const maskedDomain = btoa(domain).replace(/=/g, '');
+            return `https://secure.hackpace.io/${maskedDomain}${path}`;
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.querySelector('.notification');
+            notification.textContent = message;
+            
+            if (type === 'error') {
+                notification.classList.add('border-red-500');
+            } else {
+                notification.classList.remove('border-red-500');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Generate a link on page load
+        window.addEventListener('load', function() {
+            document.getElementById('generate-btn').click();
         });
     </script>
 </body>
