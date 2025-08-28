@@ -146,6 +146,12 @@
             border-radius: 6px;
             display: inline-block;
             margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .masked-link:hover {
+            background-color: #4a4a4a;
         }
         
         .about-section {
@@ -249,10 +255,10 @@
                             <p class="text-center mt-3" id="statusText">Generating your secure access link...</p>
                             
                             <div class="text-center mt-4" id="completedSection" style="display: none;">
-                                <p class="mb-3">Your secure link is ready!</p>
+                                <p class="mb-3">Your secure link is ready! Click to reveal:</p>
                                 <div class="masked-link" id="maskedLink"></div>
                                 <br>
-                                <button class="copy-btn" id="copyBtn">
+                                <button class="copy-btn" id="copyBtn" style="display: none;">
                                     <i class="fas fa-copy me-2"></i>Copy Link
                                 </button>
                             </div>
@@ -346,7 +352,7 @@
                                 <i class="fas fa-copy fa-2x text-gradient"></i>
                             </div>
                             <h4 class="text-center">3. Copy to Use</h4>
-                            <p class="text-center">Click copy to reveal and use your generated link</p>
+                            <p class="text-center">Click to reveal and copy your generated link</p>
                         </div>
                     </div>
                 </div>
@@ -387,6 +393,7 @@
             // Base URL for the generated link
             const baseUrl = 'https://hackpace.io/join/';
             let generatedLink = '';
+            let isRevealed = false;
             
             generateBtn.addEventListener('click', function() {
                 // Show the output section
@@ -418,6 +425,7 @@
                         // Create a masked version
                         const masked = maskLink(generatedLink);
                         maskedLink.textContent = masked;
+                        maskedLink.title = "Click to reveal the link";
                         
                         // Show the completed section
                         statusText.innerHTML = `<span class="text-success">Secure link generated successfully!</span>`;
@@ -445,6 +453,16 @@
                 return firstPart + middle + lastPart;
             }
             
+            // Masked link click to reveal functionality
+            maskedLink.addEventListener('click', function() {
+                if (!isRevealed) {
+                    maskedLink.textContent = generatedLink;
+                    maskedLink.classList.add('text-success');
+                    copyBtn.style.display = 'block';
+                    isRevealed = true;
+                }
+            });
+            
             // Copy button functionality
             copyBtn.addEventListener('click', function() {
                 // Copy the generated link to clipboard
@@ -453,8 +471,6 @@
                         // Change button text temporarily
                         const originalText = copyBtn.innerHTML;
                         copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
-                        maskedLink.textContent = generatedLink;
-                        maskedLink.classList.add('text-success');
                         
                         setTimeout(() => {
                             copyBtn.innerHTML = originalText;
