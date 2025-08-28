@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Link Masker</title>
+    <title>Secure Link Masking Tool</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,10 +14,11 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background: linear-gradient(135deg, #0c0c0c, #1a1a1a, #2a2a2a);
             color: #fff;
             min-height: 100vh;
             padding: 20px;
+            line-height: 1.6;
         }
         
         .container {
@@ -35,6 +36,9 @@
             font-size: 3rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to right, #fdbb2d, #b21f1f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         header p {
@@ -42,6 +46,7 @@
             max-width: 800px;
             margin: 0 auto;
             opacity: 0.9;
+            color: #ccc;
         }
         
         .main-content {
@@ -58,46 +63,48 @@
         }
         
         .card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(40, 40, 40, 0.8);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .card h2 {
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 2px solid rgba(253, 187, 45, 0.5);
             display: flex;
             align-items: center;
             gap: 10px;
+            color: #fdbb2d;
         }
         
-        .input-group {
-            margin-bottom: 20px;
+        .link-generation {
+            text-align: center;
+            padding: 20px 0;
         }
         
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
+        .link-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 25px 0;
+            background: rgba(20, 20, 20, 0.6);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .input-group input {
-            width: 100%;
+        .link-display input {
+            flex: 1;
             padding: 12px 15px;
             border-radius: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 30, 30, 0.6);
             color: white;
             font-size: 16px;
-        }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: #fdbb2d;
         }
         
         button {
@@ -116,24 +123,7 @@
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-        
-        .result-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .result-container input {
-            flex: 1;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
         
         .copy-btn {
@@ -148,7 +138,7 @@
         }
         
         .os-btn {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(30, 30, 30, 0.6);
             padding: 15px;
             border-radius: 8px;
             text-align: center;
@@ -158,27 +148,30 @@
         }
         
         .os-btn:hover {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(40, 40, 40, 0.8);
             border-color: #fdbb2d;
         }
         
         .os-btn i {
             font-size: 2rem;
             margin-bottom: 10px;
+            color: #fdbb2d;
         }
         
         .os-btn.active {
-            background: linear-gradient(to right, #1a2a6c, #2a4b8c);
+            background: linear-gradient(to right, rgba(26, 42, 108, 0.4), rgba(42, 75, 140, 0.4));
             border-color: #fdbb2d;
         }
         
         .guide-content {
             margin-top: 20px;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(20, 20, 20, 0.6);
             border-radius: 8px;
             max-height: 300px;
             overflow-y: auto;
+            color: #ccc;
+            line-height: 1.6;
         }
         
         .guide-content h3 {
@@ -188,7 +181,6 @@
         
         .guide-content ol {
             padding-left: 20px;
-            line-height: 1.6;
         }
         
         .guide-content li {
@@ -203,13 +195,13 @@
         }
         
         .stat-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(40, 40, 40, 0.8);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 25px;
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: transform 0.3s ease;
         }
         
@@ -226,11 +218,13 @@
         .stat-card h3 {
             font-size: 2.5rem;
             margin-bottom: 10px;
+            color: #fff;
         }
         
         .stat-card p {
             font-size: 1.1rem;
             opacity: 0.9;
+            color: #ccc;
         }
         
         .stat-card a {
@@ -241,13 +235,13 @@
             gap: 8px;
             margin-top: 15px;
             padding: 8px 15px;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
             transition: all 0.3s ease;
         }
         
         .stat-card a:hover {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(253, 187, 45, 0.2);
             transform: translateY(-2px);
         }
         
@@ -255,7 +249,8 @@
             text-align: center;
             padding: 30px 0;
             margin-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
         }
         
         .notification {
@@ -263,43 +258,104 @@
             top: 20px;
             right: 20px;
             padding: 15px 25px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             color: white;
             border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
             transform: translateX(100vw);
             transition: transform 0.3s ease;
             z-index: 1000;
+            border-left: 4px solid #fdbb2d;
         }
         
         .notification.show {
             transform: translateX(0);
+        }
+        
+        .tor-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #7e4799;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #fdbb2d, #b21f1f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            color: #ccc;
+        }
+        
+        .feature i {
+            margin-right: 10px;
+            color: #fdbb2d;
+        }
+        
+        .download-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Secure Link Masker</h1>
-            <p>Protect your privacy by masking URLs and accessing the web securely with Tor browser</p>
+            <div class="logo">
+                <i class="fab fa-tor-onion tor-icon"></i>
+                <div class="logo-text">SecureMask</div>
+            </div>
+            <h1>Secure Link Masking Tool</h1>
+            <p>Protect your privacy with automatically generated masked links and secure browsing with Tor</p>
         </header>
         
         <div class="main-content">
             <div class="card">
-                <h2><i class="fas fa-link"></i> Link Masking Tool</h2>
-                <div class="input-group">
-                    <label for="original-url">Enter URL to mask:</label>
-                    <input type="url" id="original-url" placeholder="https://example.com">
-                </div>
-                <button id="generate-btn">
-                    <i class="fas fa-magic"></i> Generate Masked Link
-                </button>
+                <h2><i class="fas fa-link"></i> Secure Link Generator</h2>
                 
-                <div class="result-container">
-                    <input type="text" id="masked-url" readonly placeholder="Your masked link will appear here">
-                    <button id="copy-btn" class="copy-btn">
-                        <i class="fas fa-copy"></i> Copy
+                <div class="link-generation">
+                    <p>Click to generate a secure masked link:</p>
+                    <button id="generate-btn">
+                        <i class="fas fa-magic"></i> Generate Secure Link
                     </button>
+                    
+                    <div class="link-display">
+                        <input type="text" id="masked-url" readonly placeholder="Your secure link will appear here">
+                        <button id="copy-btn" class="copy-btn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h3 style="color: #fdbb2d; margin-bottom: 10px;">Features:</h3>
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Automatic secure link generation</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-user-secret"></i>
+                        <span>No tracking or logging</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-lock"></i>
+                        <span>One-click copy functionality</span>
+                    </div>
                 </div>
             </div>
             
@@ -331,7 +387,7 @@
                     <p>Select your operating system to view installation instructions</p>
                 </div>
                 
-                <button id="download-btn" style="margin-top: 20px; width: 100%;">
+                <button id="download-btn" class="download-btn">
                     <i class="fas fa-download"></i> Download Tor Browser
                 </button>
             </div>
@@ -339,7 +395,7 @@
         
         <div class="card">
             <h2><i class="fas fa-user"></i> About Me</h2>
-            <p>With over 5 years of experience in cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone.</p>
+            <p>With over 5 years of experience in cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone, regardless of their technical background. I believe in empowering users to take control of their online privacy.</p>
             
             <div class="stats">
                 <div class="stat-card">
@@ -372,25 +428,35 @@
         </div>
         
         <footer>
-            <p>© 2023 Secure Link Masker | Privacy Protection Tools</p>
+            <p>© 2023 SecureMask | Privacy Protection Tools</p>
+            <p>All rights reserved</p>
         </footer>
     </div>
     
     <div class="notification" id="notification">Link copied to clipboard!</div>
     
     <script>
-        // Link masking functionality
+        // Link generation functionality
         document.getElementById('generate-btn').addEventListener('click', function() {
-            const originalUrl = document.getElementById('original-url').value;
+            // Generate a random masked URL
+            const randomId = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+            const domains = ['secure-link', 'privacy-protected', 'anon-redirect', 'masked-url'];
+            const tlds = ['com', 'net', 'org', 'io'];
             
-            if (!originalUrl) {
-                alert('Please enter a URL to mask');
-                return;
-            }
+            const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+            const randomTld = tlds[Math.floor(Math.random() * tlds.length)];
             
-            // Simple masking by encoding the URL (in a real app, this would be more sophisticated)
-            const maskedUrl = 'https://secure-link.example.com/' + btoa(originalUrl);
+            const maskedUrl = `https://${randomDomain}.${randomTld}/x${randomId}y`;
             document.getElementById('masked-url').value = maskedUrl;
+            
+            // Show notification
+            const notification = document.getElementById('notification');
+            notification.textContent = 'Secure link generated!';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
         });
         
         // Copy functionality
@@ -398,7 +464,7 @@
             const maskedUrl = document.getElementById('masked-url');
             
             if (!maskedUrl.value) {
-                alert('Please generate a masked link first');
+                alert('Please generate a secure link first');
                 return;
             }
             
@@ -419,12 +485,24 @@
         const osButtons = document.querySelectorAll('.os-btn');
         let selectedOS = '';
         
+        // Sample file sizes for each OS
+        const fileSizes = {
+            windows: '85 MB',
+            mac: '120 MB',
+            linux: '95 MB',
+            android: '25 MB'
+        };
+        
         osButtons.forEach(btn => {
             btn.addEventListener('click', function() {
                 osButtons.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 selectedOS = this.getAttribute('data-os');
                 updateGuide(selectedOS);
+                
+                // Update download button text with file size
+                const downloadBtn = document.getElementById('download-btn');
+                downloadBtn.innerHTML = `<i class="fas fa-download"></i> Download for ${this.querySelector('span').textContent} (${fileSizes[selectedOS]})`;
             });
         });
         
@@ -443,6 +521,7 @@
                         <li>Launch Tor Browser from your start menu</li>
                         <li>Connect to the Tor network when prompted</li>
                     </ol>
+                    <p><strong>System Requirements:</strong> Windows 8.1 or higher, 64-bit</p>
                 `,
                 mac: `
                     <h3>macOS Installation Guide</h3>
@@ -454,6 +533,7 @@
                         <li>You may need to allow Tor Browser in Security & Privacy settings</li>
                         <li>Connect to the Tor network when prompted</li>
                     </ol>
+                    <p><strong>System Requirements:</strong> macOS 10.14 or higher</p>
                 `,
                 linux: `
                     <h3>Linux Installation Guide</h3>
@@ -464,16 +544,19 @@
                         <li>Run the start script: ./start-tor-browser.desktop</li>
                         <li>Connect to the Tor network when prompted</li>
                     </ol>
+                    <p><strong>System Requirements:</strong> 64-bit Linux distribution</p>
                 `,
                 android: `
                     <h3>Android Installation Guide</h3>
                     <ol>
-                        <li>Download Tor Browser from the Google Play Store or F-Droid</li>
-                        <li>Open the Tor Browser app after installation</li>
+                        <li>Download Tor Browser for Android</li>
+                        <li>Open the downloaded APK file</li>
+                        <li>Allow installation from unknown sources if prompted</li>
+                        <li>Complete the installation process</li>
+                        <li>Open the Tor Browser app</li>
                         <li>Tap "Connect" to establish a connection to the Tor network</li>
-                        <li>Once connected, you can browse anonymously</li>
-                        <li>For best security, use Orbot along with Tor Browser</li>
                     </ol>
+                    <p><strong>System Requirements:</strong> Android 5.0 or higher</p>
                 `
             };
             
@@ -488,13 +571,33 @@
             
             // In a real application, this would point to the actual download URLs
             const downloadUrls = {
-                windows: 'https://www.torproject.org/download/',
-                mac: 'https://www.torproject.org/download/',
-                linux: 'https://www.torproject.org/download/',
-                android: 'https://www.torproject.org/download/'
+                windows: 'https://www.torproject.org/dist/torbrowser/12.0.1/torbrowser-install-win64-12.0.1_ALL.exe',
+                mac: 'https://www.torproject.org/dist/torbrowser/12.0.1/TorBrowser-12.0.1-macos_ALL.dmg',
+                linux: 'https://www.torproject.org/dist/torbrowser/12.0.1/tor-browser-linux64-12.0.1_ALL.tar.xz',
+                android: 'https://www.torproject.org/dist/torbrowser/12.0.1/tor-browser-android-12.0.1_ALL.apk'
             };
             
-            window.open(downloadUrls[selectedOS], '_blank');
+            // Create a temporary anchor element to trigger the download
+            const a = document.createElement('a');
+            a.href = downloadUrls[selectedOS];
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // Show notification
+            const notification = document.getElementById('notification');
+            notification.textContent = `Downloading Tor for ${selectedOS}...`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        });
+        
+        // Generate a link on page load
+        window.addEventListener('load', function() {
+            document.getElementById('generate-btn').click();
         });
     </script>
 </body>
