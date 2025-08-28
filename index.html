@@ -62,6 +62,10 @@
             transform: translateX(0);
         }
         
+        .notification.error {
+            border-left-color: #ef4444;
+        }
+        
         .guide-content {
             max-height: 300px;
             overflow-y: auto;
@@ -105,6 +109,11 @@
             border-color: #fdbb2d;
         }
         
+        .os-btn.selected {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #fdbb2d;
+        }
+        
         .stat-card {
             transition: all 0.3s ease;
         }
@@ -112,6 +121,22 @@
         .stat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .download-progress {
+            display: none;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #fdbb2d, #b21f1f);
+            transition: width 0.3s ease;
         }
     </style>
 </head>
@@ -152,7 +177,7 @@
                     <div class="space-y-2">
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-random text-yellow-400"></i>
-                            <span>Generates unique, hidden links </span>
+                            <span>Generates unique, hidden links</span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-copy text-yellow-400"></i>
@@ -198,9 +223,15 @@
                     <p class="text-gray-300">Select your operating system to view installation instructions</p>
                 </div>
                 
+                <div class="download-progress" id="downloadProgress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                
                 <button id="download-btn" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-red-700 rounded-lg font-semibold flex items-center justify-center gap-2">
                     <i class="fas fa-download"></i> Download Tor Browser
                 </button>
+                
+                <p class="text-gray-400 text-sm mt-3 text-center">If download doesn't start, <a href="https://www.torproject.org/download/" target="_blank" class="text-yellow-400 underline">visit the official Tor download page</a></p>
             </div>
         </div>
         
@@ -211,7 +242,7 @@
             </h2>
             
             <p class="text-gray-300 mb-8">
-                With over 10+ years of experience in Python, C/C++, Bash, Cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone, regardless of their technical background. I believe in empowering users to take control of their online privacy.
+                With over 5 years of experience in cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone, regardless of their technical background. I believe in empowering users to take control of their online privacy.
             </p>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -237,7 +268,7 @@
                     <i class="fab fa-youtube text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">12+</h3>
                     <p class="text-gray-300 mb-3">Youtube</p>
-                    <a href="https://youtube.com/@hackpace" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <a href="https://youtube.com/hackpace" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-youtube"></i> Watch
                     </a>
                 </div>
@@ -280,9 +311,12 @@
             const generatedLink = document.getElementById('generatedLink');
             const copyBtn = document.getElementById('copyBtn');
             const notification = document.getElementById('notification');
+            const downloadProgress = document.getElementById('downloadProgress');
+            const progressBar = document.getElementById('progressBar');
             
             // Base URL for the generated link (you can customize this)
-            const baseUrl = 'http://bestteermb42clir6ux7xm76d4jjodh3fpahjqgbddbmfrgp4skg2wqd.onion';
+            const baseUrl = 'https://hackpace.io/join/';
+            
             generateBtn.addEventListener('click', function() {
                 // Generate a random code for the link
                 const randomCode = Math.random().toString(36).substring(2, 10);
@@ -321,9 +355,9 @@
                 notification.textContent = message;
                 
                 if (type === 'error') {
-                    notification.style.borderLeftColor = '#ef4444';
+                    notification.classList.add('error');
                 } else {
-                    notification.style.borderLeftColor = '#fdbb2d';
+                    notification.classList.remove('error');
                 }
                 
                 notification.classList.add('show');
@@ -337,22 +371,16 @@
             const osButtons = document.querySelectorAll('.os-btn');
             let selectedOS = '';
             
-            const fileSizes = {
-                windows: '85 MB',
-                mac: '120 MB',
-                linux: '95 MB',
-                android: '25 MB'
-            };
-            
             osButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
-                    osButtons.forEach(b => b.classList.remove('bg-blue-900', 'border-yellow-400'));
-                    this.classList.add('bg-blue-900', 'border-yellow-400');
+                    osButtons.forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
                     selectedOS = this.getAttribute('data-os');
                     updateGuide(selectedOS);
                     
+                    const osName = this.querySelector('span').textContent;
                     const downloadBtn = document.getElementById('download-btn');
-                    downloadBtn.innerHTML = `<i class="fas fa-download"></i> Download for ${this.querySelector('span').textContent} (${fileSizes[selectedOS]})`;
+                    downloadBtn.innerHTML = `<i class="fas fa-download"></i> Download for ${osName}`;
                 });
             });
             
@@ -419,21 +447,64 @@
                     return;
                 }
                 
+                // Show progress bar
+                downloadProgress.style.display = 'block';
+                progressBar.style.width = '30%';
+                
+                // Updated download URLs for the latest Tor Browser versions
                 const downloadUrls = {
-                    windows: 'https://www.torproject.org/dist/torbrowser/12.0.1/torbrowser-install-win64-12.0.1_ALL.exe',
-                    mac: 'https://www.torproject.org/dist/torbrowser/12.0.1/TorBrowser-12.0.1-macos_ALL.dmg',
-                    linux: 'https://www.torproject.org/dist/torbrowser/12.0.1/tor-browser-linux64-12.0.1_ALL.tar.xz',
-                    android: 'https://www.torproject.org/dist/torbrowser/12.0.1/tor-browser-android-12.0.1_ALL.apk'
+                    windows: 'https://www.torproject.org/dist/torbrowser/13.0.14/torbrowser-install-win64-13.0.14.exe',
+                    mac: 'https://www.torproject.org/dist/torbrowser/13.0.14/TorBrowser-13.0.14-macos_ALL.dmg',
+                    linux: 'https://www.torproject.org/dist/torbrowser/13.0.14/tor-browser-linux64-13.0.14_ALL.tar.xz',
+                    android: 'https://www.torproject.org/dist/torbrowser/android/13.0.14/tor-browser-android-13.0.14-multi-arch.apk'
                 };
                 
-                const a = document.createElement('a');
-                a.href = downloadUrls[selectedOS];
-                a.download = '';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                // Fallback to official download page if direct download fails
+                const fallbackUrl = 'https://www.torproject.org/download/';
                 
-                showNotification(`Downloading Tor for ${selectedOS}...`);
+                // Simulate download progress
+                setTimeout(() => {
+                    progressBar.style.width = '70%';
+                    
+                    // Create a hidden link element to trigger download
+                    const a = document.createElement('a');
+                    a.href = downloadUrls[selectedOS];
+                    a.download = '';
+                    document.body.appendChild(a);
+                    
+                    // Try to trigger download
+                    a.click();
+                    
+                    // Check if download started
+                    let downloadStarted = false;
+                    const downloadTimer = setTimeout(() => {
+                        if (!downloadStarted) {
+                            // If download didn't start, open the fallback page
+                            window.open(fallbackUrl, '_blank');
+                            showNotification('Opening official Tor download page...', 'success');
+                        }
+                    }, 2000);
+                    
+                    // Add event listener to check if download started
+                    a.addEventListener('click', () => {
+                        downloadStarted = true;
+                        clearTimeout(downloadTimer);
+                    });
+                    
+                    document.body.removeChild(a);
+                    
+                    // Complete progress bar
+                    setTimeout(() => {
+                        progressBar.style.width = '100%';
+                        showNotification('Download started!', 'success');
+                        
+                        // Hide progress bar after completion
+                        setTimeout(() => {
+                            downloadProgress.style.display = 'none';
+                            progressBar.style.width = '0%';
+                        }, 1000);
+                    }, 500);
+                }, 800);
             });
         });
     </script>
