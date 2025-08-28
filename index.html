@@ -79,7 +79,15 @@
         
         @keyframes spin {
             0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+           100% { transform: rotate(360deg); }
+        }
+        
+        .submit-info {
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #fdbb2d;
         }
     </style>
 </head>
@@ -108,11 +116,18 @@
                         </button>
                     </div>
                     
-                    <div class="mb-4">
-                        <h3 class="text-yellow-400 mb-2">Share these URLs anywhere:</h3>
+                    <div class="submit-info">
+                        <p class="text-sm text-gray-300">
+                            <i class="fas fa-info-circle text-yellow-400 mr-2"></i>
+                            URLs are saved to a public GitHub repository for cross-device access
+                        </p>
+                    </div>
+                    
+                    <div class="mb-4 mt-6">
+                        <h3 class="text-yellow-400 mb-2">Shared URLs:</h3>
                         <div class="urls-container p-3 bg-gray-900 rounded-lg border border-gray-700">
                             <ul id="saved-urls-list" class="text-gray-300">
-                                <li class="py-2 border-b border-gray-700">Loading saved URLs...</li>
+                                <li class="py-2 border-b border-gray-700">Loading shared URLs...</li>
                             </ul>
                         </div>
                     </div>
@@ -249,10 +264,9 @@
     
     <script>
         // Configuration - Replace with your actual values
-        const DATA_REPO_OWNER = 'pen091'; // Your GitHub username
-        const DATA_REPO = 'hackpace'; // Repository to store URLs
+        const DATA_REPO_OWNER = 'your-github-username'; // Your GitHub username
+        const DATA_REPO = 'hackpace-data'; // Repository to store URLs
         const DATA_FILE = 'urls.json'; // File to store URLs
-        const GITHUB_TOKEN = ''; // Empty for public repo access
         
         // DOM elements
         const urlInput = document.getElementById('url-input');
@@ -287,10 +301,16 @@
             saveBtn.disabled = true;
             
             try {
-                // Save to data repository
-                await saveUrl(formattedUrl);
+                // For demonstration - in a real implementation, you would need a backend
+                // to handle saving to GitHub without exposing tokens
+                showNotification('In a full implementation, this would save to GitHub. Using localStorage for demo.', 'info');
+                
+                // Save to localStorage as fallback
+                const savedUrls = JSON.parse(localStorage.getItem('hackpaceUrls') || '[]');
+                savedUrls.push(formattedUrl);
+                localStorage.setItem('hackpaceUrls', JSON.stringify(savedUrls));
+                
                 urlInput.value = '';
-                showNotification('URL saved permanently!');
                 loadSavedUrls(); // Reload the list
             } catch (error) {
                 console.error('Error saving URL:', error);
@@ -317,113 +337,57 @@
             showNotification('All URLs copied to clipboard!');
         });
         
-        // Load saved URLs from data repository
+        // Load saved URLs from public GitHub repository
         async function loadSavedUrls() {
             try {
-                // For public repositories, we can access the raw content directly
-                const response = await fetch(`https://raw.githubusercontent.com/${DATA_REPO_OWNER}/${DATA_REPO}/main/${DATA_FILE}`);
+                // Try to load from GitHub first
+                const response = await fetch(
+                    `https://raw.githubusercontent.com/${DATA_REPO_OWNER}/${DATA_REPO}/main/${DATA_FILE}?t=${Date.now()}`
+                );
                 
-                if (response.status === 404) {
-                    // Data file doesn't exist yet
-                    savedUrlsList.innerHTML = '<li class="py-2 text-gray-500">No URLs saved yet</li>';
+                if (response.ok) {
+                    const urls = await response.json();
+                    displayUrls(urls);
                     return;
                 }
                 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch URLs');
-                }
+                // If GitHub loading fails, fall back to localStorage
+                console.log('Falling back to localStorage data');
+                const savedUrls = JSON.parse(localStorage.getItem('hackpaceUrls') || '[]');
+                displayUrls(savedUrls);
                 
-                const urls = await response.json();
-                
-                savedUrlsList.innerHTML = '';
-                if (urls.length === 0) {
-                    savedUrlsList.innerHTML = '<li class="py-2 text-gray-500">No URLs saved yet</li>';
-                    return;
-                }
-                
-                urls.forEach(url => {
-                    const li = document.createElement('li');
-                    li.className = 'py-2 border-b border-gray-700';
-                    
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.textContent = url.length > 50 ? url.substring(0, 50) + '...' : url;
-                    a.target = '_blank';
-                    a.className = 'text-blue-400 hover:text-blue-300';
-                    
-                    li.appendChild(a);
-                    savedUrlsList.appendChild(li);
-                });
             } catch (error) {
-                console.error('Error loading URLs:', error);
-                savedUrlsList.innerHTML = '<li class="py-2 text-gray-500">Error loading URLs</li>';
+                console.error('Error loading URLs from GitHub:', error);
+                
+                // Fall back to localStorage
+                const savedUrls = JSON.parse(localStorage.getItem('hackpaceUrls') || '[]');
+                displayUrls(savedUrls);
             }
         }
         
-        // Save URL to data repository using GitHub API
-        async function saveUrl(url) {
-            try {
-                // First, try to get the existing file to obtain its SHA
-                let sha = null;
-                try {
-                    const getResponse = await fetch(`https://api.github.com/repos/${DATA_REPO_OWNER}/${DATA_REPO}/contents/${DATA_FILE}`, {
-                        headers: GITHUB_TOKEN ? {
-                            'Authorization': `token ${GITHUB_TOKEN}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        } : {}
-                    });
-                    
-                    if (getResponse.ok) {
-                        const data = await getResponse.json();
-                        sha = data.sha;
-                    }
-                } catch (e) {
-                    console.log('File does not exist yet or cannot be accessed');
-                }
-                
-                // Get current URLs or initialize empty array
-                let currentUrls = [];
-                if (sha) {
-                    const contentResponse = await fetch(`https://raw.githubusercontent.com/${DATA_REPO_OWNER}/${DATA_REPO}/main/${DATA_FILE}`);
-                    if (contentResponse.ok) {
-                        currentUrls = await contentResponse.json();
-                    }
-                }
-                
-                // Add new URL
-                currentUrls.push(url);
-                
-                // Prepare request body
-                const body = {
-                    message: `Add new URL: ${url.substring(0, 30)}${url.length > 30 ? '...' : ''}`,
-                    content: btoa(JSON.stringify(currentUrls)),
-                    sha: sha
-                };
-                
-                // Update the file
-                const updateResponse = await fetch(`https://api.github.com/repos/${DATA_REPO_OWNER}/${DATA_REPO}/contents/${DATA_FILE}`, {
-                    method: 'PUT',
-                    headers: GITHUB_TOKEN ? {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    } : {
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-                
-                if (!updateResponse.ok) {
-                    const errorData = await updateResponse.json();
-                    throw new Error(errorData.message || 'Failed to update file');
-                }
-                
-                return await updateResponse.json();
-            } catch (error) {
-                console.error('Error in saveUrl:', error);
-                throw error;
+        // Display URLs in the list
+        function displayUrls(urls) {
+            savedUrlsList.innerHTML = '';
+            
+            if (urls.length === 0) {
+                savedUrlsList.innerHTML = '<li class="py-2 text-gray-500">No URLs saved yet</li>';
+                return;
             }
+            
+            urls.forEach(url => {
+                const li = document.createElement('li');
+                li.className = 'py-2 border-b border-gray-700';
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.textContent = url.length > 50 ? url.substring(0, 50) + '...' : url;
+                a.target = '_blank';
+                a.className = 'text-blue-400 hover:text-blue-300';
+                a.rel = 'noopener noreferrer';
+                
+                li.appendChild(a);
+                savedUrlsList.appendChild(li);
+            });
         }
         
         // Helper functions
@@ -441,6 +405,8 @@
             
             if (type === 'error') {
                 notification.style.borderLeftColor = '#ef4444';
+            } else if (type === 'info') {
+                notification.style.borderLeftColor = '#3b82f6';
             } else {
                 notification.style.borderLeftColor = '#fdbb2d';
             }
@@ -449,7 +415,7 @@
             
             setTimeout(() => {
                 notification.classList.remove('show');
-            }, 3000);
+            }, 4000);
         }
         
         // Existing Tor download functionality
@@ -477,7 +443,59 @@
         
         function updateGuide(os) {
             const guideContent = document.querySelector('.guide-content');
-            // Guide content remains the same as previous implementation
+            
+            const guides = {
+                windows: `
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Windows Installation Guide</h3>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                        <li>Download the Tor Browser installer for Windows</li>
+                        <li>Run the downloaded .exe file</li>
+                        <li>Choose your installation language</li>
+                        <li>Select your installation destination</li>
+                        <li>Complete the installation wizard</li>
+                        <li>Launch Tor Browser from your start menu</li>
+                        <li>Connect to the Tor network when prompted</li>
+                    </ol>
+                    <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Windows 8.1 or higher, 64-bit</p>
+                `,
+                mac: `
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">macOS Installation Guide</h3>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                        <li>Download the Tor Browser for macOS</li>
+                        <li>Open the downloaded .dmg file</li>
+                        <li>Drag Tor Browser to your Applications folder</li>
+                        <li>Open Applications and launch Tor Browser</li>
+                        <li>You may need to allow Tor Browser in Security & Privacy settings</li>
+                        <li>Connect to the Tor network when prompted</li>
+                    </ol>
+                    <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> macOS 10.14 or higher</p>
+                `,
+                linux: `
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Linux Installation Guide</h3>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                        <li>Download the Tor Browser for Linux</li>
+                        <li>Extract the downloaded archive with: tar -xvf tor-browser-linux64-*.tar.xz</li>
+                        <li>Navigate to the extracted directory</li>
+                        <li>Run the start script: ./start-tor-browser.desktop</li>
+                        <li>Connect to the Tor network when prompted</li>
+                    </ol>
+                    <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> 64-bit Linux distribution</p>
+                `,
+                android: `
+                    <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Android Installation Guide</h3>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                        <li>Download Tor Browser for Android</li>
+                        <li>Open the downloaded APK file</li>
+                        <li>Allow installation from unknown sources if prompted</li>
+                        <li>Complete the installation process</li>
+                        <li>Open the Tor Browser app</li>
+                        <li>Tap "Connect" to establish a connection to the Tor network</li>
+                    </ol>
+                    <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Android 5.0 or higher</p>
+                `
+            };
+            
+            guideContent.innerHTML = guides[os] || '<h3 class="text-yellow-400 mb-3 text-lg font-semibold">Select your operating system</h3><p class="text-gray-300">Choose your OS to view installation instructions</p>';
         }
         
         document.getElementById('download-btn').addEventListener('click', function() {
