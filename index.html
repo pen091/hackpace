@@ -3,499 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackPace - Coding Dojo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Hackpace</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --hacker-green: #00ff00;
-            --dark-bg: #1a1a1a;
-        }
-
         body {
-            background-color: var(--dark-bg);
-            color: var(--hacker-green);
-            font-family: 'Courier New', monospace;
-            margin: 0;
-            overflow-x: hidden;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-
-        /* Matrix background effect */
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            z-index: -1;
-        }
-
-        /* Header styles */
         .header {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 1rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 2px solid var(--hacker-green);
+            background-color: #0a0a0a;
+            padding: 1rem 0;
         }
-
-        .logo {
-            font-size: 2rem;
-            text-shadow: 0 0 10px var(--hacker-green);
+        .main-content {
+            flex: 1;
+            padding: 3rem 0;
+            background-color: #1a1a1a;
+        }
+        .circle-btn {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6e45e2, #88d3ce);
             display: flex;
             align-items: center;
-        }
-
-        .logo::after {
-            content: "_";
-            animation: cursor-blink 1s infinite;
-        }
-
-        @keyframes cursor-blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Course grid */
-        .course-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-            margin-top: 100px;
-        }
-
-        .course-card {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 2rem;
-            border: 1px solid var(--hacker-green);
-            border-radius: 5px;
-            transition: all 0.3s;
+            justify-content: center;
+            margin: 0 auto;
             cursor: pointer;
-        }
-
-        .course-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px var(--hacker-green);
-        }
-
-        /* Social links */
-        .social-links {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-        }
-
-        .social-links a {
-            color: var(--hacker-green);
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: bold;
-        }
-
-        /* Content container */
-        .content-container {
-            display: none;
-            padding: 2rem;
-            margin-top: 100px;
-        }
-
-        .back-button {
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        /* Terminal effect */
-        .terminal {
-            border: 2px solid var(--hacker-green);
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-        <!-- arrow -->
-                .big-arrow {
-      font-size: 300px; /* Very big size */
-      text-align: center;
-      margin-top: 100px;
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0;
-      }
-    }
-
-    <!-- open popup -->
-
-    body {
-            background-color: #001100;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-        }
-
-        .course-links {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            border: 1px solid #00ff00;
-            box-shadow: 0 0 15px #00ff0080;
-        }
-
-        .course-link {
-            display: block;
-            padding: 15px 20px;
-            margin: 10px 0;
-            color: #00ff00;
-            text-decoration: none;
-            font-size: 18px;
-            border-left: 4px solid #00ff00;
             transition: all 0.3s ease;
-            text-shadow: 0 0 5px #00ff00;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-
-        .course-link:hover {
-            background-color: #002200;
-            padding-left: 25px;
-            box-shadow: 0 0 10px #00ff0080;
+        .circle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
-
-        .modal {
+        .circle-btn i {
+            font-size: 3rem;
+            color: white;
+        }
+        .link-output {
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 20, 0, 0.95);
-            z-index: 1000;
         }
-
-        .modal-content {
-            background-color: #001100;
-            margin: 15% auto;
-            padding: 25px;
-            width: 70%;
-            max-width: 600px;
-            border: 1px solid #00ff00;
-            box-shadow: 0 0 20px #00ff00;
-            position: relative;
-            overflow: hidden;
+        .footer {
+            background-color: #0a0a0a;
+            padding: 1.5rem 0;
         }
-
-        .modal-content::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 48%,
-                #00ff0044 50%,
-                transparent 52%
-            );
-            animation: scan 4s linear infinite;
+        .social-icon {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            color: #ddd;
+            transition: color 0.3s;
         }
-
-        .close {
-            position: absolute;
-            right: 20px;
-            top: 10px;
-            font-size: 28px;
-            cursor: pointer;
-            color: #00ff00;
-            text-shadow: 0 0 5px #00ff00;
-            z-index: 2;
+        .social-icon:hover {
+            color: #6e45e2;
         }
-
-        .modal-body pre {
-            background-color: #000000;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes scan {
-            0% { transform: translateY(0) rotate(45deg); }
-            100% { transform: translateY(100%) rotate(45deg); }
-        }
-
-        .glitch {
-            animation: glitch 1s linear infinite;
-        }
-
-        @keyframes glitch {
-            2% { text-shadow: 2px 0 #ff00ff; }
-            4% { text-shadow: -2px 0 #00ffff; }
-            6% { text-shadow: 2px 0 #ff00ff; }
-            8% { text-shadow: -2px 0 #00ffff; }
-            10% { text-shadow: 0 0 transparent; }
-            100% { text-shadow: 0 0 transparent; }
-        }
-    
-    <!-- close popup -->
-
-        .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        z-index: 2000;
-    }
-
-    .modal-content {
-        background-color: #001a00;
-        margin: 5% auto;
-        padding: 25px;
-        width: 80%;
-        max-width: 800px;
-        border: 2px solid var(--hacker-green);
-        box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
-        position: relative;
-    }
-
-    .close {
-        color: var(--hacker-green);
-        float: right;
-        font-size: 32px;
-        font-weight: bold;
-        cursor: pointer;
-        text-shadow: 0 0 10px var(--hacker-green);
-    }
-
-    .close:hover {
-        color: #00ff00;
-    }
-
-    .modal-body {
-        padding: 20px;
-        color: var(--hacker-green);
-    }
-
-    .course-outline-content pre {
-        background: #000;
-        padding: 15px;
-        border-radius: 5px;
-        overflow-x: auto;
-    }
-
-        <!-- Add this CSS -->
-<style>
-    /* Updated Social Links Styles */
-    .social-links {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: rgba(0, 0, 0, 0.8);
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid var(--hacker-green);
-        box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-    }
-
-    .social-links a {
-        color: var(--hacker-green);
-        text-decoration: none;
-        margin: 0 10px;
-        font-weight: bold;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .social-links a:hover {
-        color: #00ff00;
-        text-shadow: 0 0 10px var(--hacker-green);
-        transform: scale(1.1);
-    }
-
-    .social-links i {
-        font-size: 1.2em;
-    }
-
-        
-</style>
-
-<!-- Add this HTML -->
-<div class="social-links">
-    <a href="#" target="_blank">
-        <i class="fab fa-x-twitter"></i>
-        <span>X</span>
-    </a>
-    <a href="#" target="_blank">
-        <i class="fab fa-tiktok"></i>
-        <span>TikTok</span>
-    </a>
-    <a href="#" target="_blank">
-        <i class="fab fa-instagram"></i>
-        <span>Instagram</span>
-    </a>
-    <a href="#" target="_blank">
-        <i class="fab fa-youtube"></i>
-        <span>YouTube</span>
-    </a>
-    <a href="#" target="_blank">
-        <i class="fab fa-github"></i>
-        <span>GitHub</span>
-    </a>
-    <a href="#" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-        <span>WhatsApp</span>
-    </a>
-</div>
     </style>
 </head>
 <body>
-    <!-- Add this modal HTML before closing body tag -->
-    <div id="courseModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div class="modal-body" id="modalContent"></div>
-        </div>
-    </div>
-    <div class="matrix-bg" id="matrix"></div>
-    
+    <!-- Header -->
     <header class="header">
-        <div class="logo">HackPace</div>
-        <nav class="nav-menu">
-            <a href="#home" onclick="showSection('home')">Home</a>
-            <a href="#courses" onclick="showSection('courses')">Courses</a>
-        </nav>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Hackpace</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
 
-    <main id="main-content">
-        <div class="course-grid" id="courses-section">
-            <div class="course-card" onclick="showCourse('c')">
-                <h3><i class="fas fa-terminal"></i> C Programming</h3>
-                <p>      Master</p>
-                <p>Low-level programming</p>
-                <p>System development</p>
-                <p></p>Hacking</p>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container text-center">
+            <h1 class="mb-4">Welcome to Hackpace</h1>
+            <p class="lead mb-5">Click the button below to generate your unique link</p>
+            
+            <div class="circle-btn" id="generateBtn">
+                <i class="fas fa-link"></i>
             </div>
-            <div class="course-card" onclick="showCourse('linux')">
-                <h3><i class="fab fa-linux"></i> Linux Administration</h3>
-                <p>Become a server management expert and networks</p>
+            
+            <div class="link-output" id="linkOutput">
+                <h4>Your Generated Link:</h4>
+                <p id="generatedLink" class="mt-3"></p>
+                <button class="btn btn-primary mt-3" id="copyBtn">Copy Link</button>
             </div>
-            <div class="course-card" onclick="showCourse('python')">
-                <h3><i class="fab fa-python"></i> Python Programming</h3>
-                <p>Learn scripting, automation and hacking</p>
-            </div>
-            <div class="course-card" onclick="showCourse('bash')">
-                <h3><i class="fas fa-code"></i> Bash Scripting</h3>
-                <p>Automate tasks like a pro</p>
-            </div>
-        </div>
-
-        <div class="content-container" id="course-content">
-            <div class="back-button" onclick="showSection('courses')">
-               ➔ [Back to Courses] 
-            </div>
-            <div id="course-data"></div>
         </div>
     </main>
 
-    <div class="social-links">
-        <a href="#"><i class="fab fa-github"></i> GitHub</a>
-        <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
-        <a href="#"><i class="fab fa-discord"></i> Discord</a>
-    </div>
-
-    
-    <!-- Update the script section -->
-<script>
-    // Course outline content
-    const courseOutlines = {
-        'c-outline1': {
-            title: "C BASIC/ADVANCE",
-            content: `// Basic C Syntax
-#include <stdio.h>
-
-int main() {
-    printf("Hello, Hacker!");
-    return 0;
-}
-
-// Advanced Concepts
-- Pointers and Memory Management
-- Data Structures
-- File I/O Operations`
-        },
-        'c-outline2': {
-            title: "DATA STRUCTURE",
-            content: `// Common Data Structures
-- Linked Lists
-- Stacks & Queues
-- Trees & Graphs
-
-// Implementation Examples
-struct node {
-    int data;
-    struct node *next;
-};`
-        },
-        // Add other course outlines similarly
-    };
-
-    // Show outline in modal
-    function showCourse(outlineId, event) {
-        event.preventDefault();
-        const outline = courseOutlines[outlineId];
-        const modal = document.getElementById('courseModal');
-        const modalContent = document.getElementById('modalContent');
-        
-        modalContent.innerHTML = `
-            <h2 class="glitch">${outline.title}</h2>
-            <div class="course-outline-content">
-                <pre>${outline.content}</pre>
-                <button class="enroll-btn" onclick="enroll('${outline.title}')">
-                    ➔ Enroll Now
-                </button>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
             </div>
-        `;
-        modal.style.display = "block";
-    }
+            <div class="text-center mt-3">
+                <p>&copy; 2023 Hackpace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-    // Close modal
-    function closeModal() {
-        document.getElementById('courseModal').style.display = "none";
-    }
-
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        const modal = document.getElementById('courseModal');
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
-
-    // Close modal with ESC key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-    });
-
-    // Update enroll function
-    function enroll(course) {
-        const message = `I want to enroll in ${course} course on HackPace`;
-        const whatsappUrl = `https://wa.me/+2349132165565?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-    }
-
-    createMatrix();
-</script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            const linkOutput = document.getElementById('linkOutput');
+            const generatedLink = document.getElementById('generatedLink');
+            const copyBtn = document.getElementById('copyBtn');
+            
+            // Base URL for the generated link (you can customize this)
+            const baseUrl = 'https://hackpace.io/join/';
+            
+            generateBtn.addEventListener('click', function() {
+                // Generate a random code for the link
+                const randomCode = Math.random().toString(36).substring(2, 10);
+                const fullLink = baseUrl + randomCode;
+                
+                // Display the generated link
+                generatedLink.textContent = fullLink;
+                linkOutput.style.display = 'block';
+                
+                // Scroll to the generated link
+                linkOutput.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                // Copy the generated link to clipboard
+                navigator.clipboard.writeText(generatedLink.textContent)
+                    .then(() => {
+                        // Change button text temporarily
+                        const originalText = copyBtn.textContent;
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyBtn.textContent = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            });
+        });
+    </script>
 </body>
 </html>
