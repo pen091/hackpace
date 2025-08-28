@@ -1,37 +1,49 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackpace</title>
+    <title>Hackpace - Get Your Link via Telegram</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark-bg: #0a0a0a;
+            --body-bg: #1a1a1a;
+            --card-bg: #2a2a2a;
+            --text-light: #f0f0f0;
+        }
+        
         body {
-            background-color: #1a1a1a;
-            color: #f0f0f0;
+            background-color: var(--body-bg);
+            color: var(--text-light);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
         .header {
-            background-color: #0a0a0a;
+            background-color: var(--dark-bg);
             padding: 1rem 0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         }
+        
         .main-content {
             flex: 1;
             padding: 3rem 0;
-            background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
+            background: linear-gradient(to bottom, var(--body-bg), #2a2a2a);
         }
+        
         .circle-btn {
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6e45e2, #88d3ce);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -41,79 +53,115 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             border: none;
         }
+        
         .circle-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 25px rgba(110, 69, 226, 0.4);
         }
+        
         .circle-btn i {
             font-size: 3rem;
             color: white;
         }
+        
         .link-output {
-            background-color: #2a2a2a;
+            background-color: var(--card-bg);
             border-radius: 12px;
             padding: 2rem;
             margin-top: 2rem;
             display: none;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border-left: 4px solid #6e45e2;
+            border-left: 4px solid var(--primary);
         }
+        
         .footer {
-            background-color: #0a0a0a;
+            background-color: var(--dark-bg);
             padding: 1.5rem 0;
             border-top: 1px solid #2a2a2a;
         }
+        
         .social-icon {
             font-size: 1.5rem;
             margin: 0 10px;
             color: #ddd;
             transition: color 0.3s;
         }
+        
         .social-icon:hover {
-            color: #6e45e2;
+            color: var(--primary);
             transform: translateY(-3px);
         }
-        .phone-input {
-            background-color: #2a2a2a;
-            border: 2px solid #3a3a3a;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-        .phone-input:focus {
-            border-color: #6e45e2;
-            box-shadow: 0 0 0 0.25rem rgba(110, 69, 226, 0.25);
-        }
-        .whatsapp-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E);
+        
+        .telegram-btn {
+            background: linear-gradient(135deg, #0088cc, #2AABEE);
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 8px;
             color: white;
             font-weight: bold;
             transition: all 0.3s;
+            margin-top: 1rem;
         }
-        .whatsapp-btn:hover {
+        
+        .telegram-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 5px 15px rgba(42, 171, 238, 0.4);
         }
+        
         .feature-card {
-            background-color: #2a2a2a;
+            background-color: var(--card-bg);
             border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s;
+            height: 100%;
         }
+        
         .feature-card:hover {
             transform: translateY(-5px);
         }
+        
         .nav-link {
             transition: color 0.3s;
         }
+        
         .nav-link:hover {
-            color: #6e45e2 !important;
+            color: var(--primary) !important;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Telegram Modal */
+        .modal-content {
+            background-color: var(--card-bg);
+            color: var(--text-light);
+            border-radius: 12px;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid #3a3a3a;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #3a3a3a;
+        }
+        
+        .telegram-modal-img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+        
+        .telegram-logo {
+            color: #2AABEE;
+            font-size: 2rem;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -156,7 +204,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
                     <h1 class="display-4 fw-bold mb-4">Welcome to <span class="text-gradient">Hackpace</span></h1>
-                    <p class="lead mb-5">Generate your unique access link and share it via WhatsApp with just one click</p>
+                    <p class="lead mb-5">Generate your unique access link and get it via Telegram</p>
                     
                     <div class="mb-5">
                         <button class="circle-btn" id="generateBtn">
@@ -169,14 +217,10 @@
                         <h4 class="mb-3"><i class="fas fa-link me-2"></i>Your Generated Link:</h4>
                         <p id="generatedLink" class="p-3 bg-dark rounded"></p>
                         
-                        <div class="mt-4">
-                            <h5 class="mb-3">Send via WhatsApp</h5>
-                            <div class="mb-3">
-                                <label for="phoneNumber" class="form-label">Enter your WhatsApp number:</label>
-                                <input type="tel" class="form-control phone-input" id="phoneNumber" placeholder="Country code + phone number">
-                            </div>
-                            <button class="whatsapp-btn" id="whatsappBtn">
-                                <i class="fab fa-whatsapp me-2"></i>Send via WhatsApp
+                        <div class="text-center mt-4">
+                            <p class="mb-3">Join our Telegram channel to receive your generated link</p>
+                            <button class="telegram-btn" id="telegramBtn" data-bs-toggle="modal" data-bs-target="#telegramModal">
+                                <i class="fab fa-telegram me-2"></i>Get Link via Telegram
                             </button>
                         </div>
                     </div>
@@ -199,19 +243,19 @@
                 <div class="col-md-4">
                     <div class="feature-card">
                         <div class="text-center mb-3">
-                            <i class="fas fa-mobile-alt fa-2x text-gradient"></i>
+                            <i class="fab fa-telegram fa-2x text-gradient"></i>
                         </div>
-                        <h4 class="text-center">2. Enter Number</h4>
-                        <p class="text-center">Provide your WhatsApp number in the input field</p>
+                        <h4 class="text-center">2. Join Telegram</h4>
+                        <p class="text-center">Click the Telegram button to join our channel</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <div class="text-center mb-3">
-                            <i class="fab fa-whatsapp fa-2x text-gradient"></i>
+                            <i class="fas fa-key fa-2x text-gradient"></i>
                         </div>
-                        <h4 class="text-center">3. Send Message</h4>
-                        <p class="text-center">Click the WhatsApp button to receive your link</p>
+                        <h4 class="text-center">3. Receive Link</h4>
+                        <p class="text-center">Get your generated link in our Telegram channel</p>
                     </div>
                 </div>
             </div>
@@ -235,6 +279,33 @@
         </div>
     </footer>
 
+    <!-- Telegram Modal -->
+    <div class="modal fade" id="telegramModal" tabindex="-1" aria-labelledby="telegramModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="telegramModalLabel">
+                        <i class="fab fa-telegram telegram-logo"></i> Join Our Telegram Channel
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Join our Telegram channel to receive your generated access link</p>
+                    <div class="bg-dark p-3 rounded my-3">
+                        <p id="modalGeneratedLink" class="mb-0"></p>
+                    </div>
+                    <p>Click the button below to join our channel and get your link</p>
+                    <a href="https://t.me/your_channel" target="_blank" class="telegram-btn">
+                        <i class="fab fa-telegram me-2"></i>Join Telegram Channel
+                    </a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -243,8 +314,8 @@
             const generateBtn = document.getElementById('generateBtn');
             const linkOutput = document.getElementById('linkOutput');
             const generatedLink = document.getElementById('generatedLink');
-            const whatsappBtn = document.getElementById('whatsappBtn');
-            const phoneNumberInput = document.getElementById('phoneNumber');
+            const modalGeneratedLink = document.getElementById('modalGeneratedLink');
+            const telegramBtn = document.getElementById('telegramBtn');
             
             // Base URL for the generated link
             const baseUrl = 'https://hackpace.io/join/';
@@ -256,34 +327,22 @@
                 
                 // Display the generated link
                 generatedLink.textContent = fullLink;
+                modalGeneratedLink.textContent = fullLink;
                 linkOutput.style.display = 'block';
                 
                 // Scroll to the generated link
                 linkOutput.scrollIntoView({ behavior: 'smooth' });
             });
             
-            whatsappBtn.addEventListener('click', function() {
-                const phoneNumber = phoneNumberInput.value.trim();
-                
-                if (!phoneNumber) {
-                    alert('Please enter your WhatsApp number');
+            // Automatically open the modal when the Telegram button is clicked
+            telegramBtn.addEventListener('click', function() {
+                // Check if a link has been generated
+                if (!generatedLink.textContent) {
+                    alert('Please generate a link first');
                     return;
                 }
                 
-                // Validate phone number (simple validation)
-                if (!/^[+]?[0-9\s\-\(\)]{10,}$/.test(phoneNumber)) {
-                    alert('Please enter a valid phone number');
-                    return;
-                }
-                
-                // Create WhatsApp message
-                const message = `Hello! Your Hackpace access link is: ${generatedLink.textContent}`;
-                
-                // Generate WhatsApp API URL
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                
-                // Open WhatsApp in a new tab
-                window.open(whatsappUrl, '_blank');
+                // The modal will open automatically due to data-bs-toggle and data-bs-target attributes
             });
         });
     </script>
