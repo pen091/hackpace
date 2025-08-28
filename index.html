@@ -15,15 +15,17 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .header {
             background-color: #0a0a0a;
             padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         }
         .main-content {
             flex: 1;
             padding: 3rem 0;
-            background-color: #1a1a1a;
+            background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
         }
         .circle-btn {
             width: 150px;
@@ -37,10 +39,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: none;
         }
         .circle-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 25px rgba(110, 69, 226, 0.4);
         }
         .circle-btn i {
             font-size: 3rem;
@@ -48,14 +51,17 @@
         }
         .link-output {
             background-color: #2a2a2a;
-            border-radius: 8px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 2rem;
             margin-top: 2rem;
             display: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid #6e45e2;
         }
         .footer {
             background-color: #0a0a0a;
             padding: 1.5rem 0;
+            border-top: 1px solid #2a2a2a;
         }
         .social-icon {
             font-size: 1.5rem;
@@ -65,6 +71,49 @@
         }
         .social-icon:hover {
             color: #6e45e2;
+            transform: translateY(-3px);
+        }
+        .phone-input {
+            background-color: #2a2a2a;
+            border: 2px solid #3a3a3a;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .phone-input:focus {
+            border-color: #6e45e2;
+            box-shadow: 0 0 0 0.25rem rgba(110, 69, 226, 0.25);
+        }
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        }
+        .feature-card {
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #6e45e2 !important;
         }
     </style>
 </head>
@@ -74,7 +123,9 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Hackpace</a>
+                    <a class="navbar-brand fw-bold" href="#">
+                        <i class="fas fa-code me-2"></i>Hackpace
+                    </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -86,6 +137,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#">About</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Contact</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -95,18 +152,68 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="container text-center">
-            <h1 class="mb-4">Welcome to Hackpace</h1>
-            <p class="lead mb-5">Click the button below to generate your unique link</p>
-            
-            <div class="circle-btn" id="generateBtn">
-                <i class="fas fa-link"></i>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h1 class="display-4 fw-bold mb-4">Welcome to <span class="text-gradient">Hackpace</span></h1>
+                    <p class="lead mb-5">Generate your unique access link and share it via WhatsApp with just one click</p>
+                    
+                    <div class="mb-5">
+                        <button class="circle-btn" id="generateBtn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <p class="mt-3">Click to generate your link</p>
+                    </div>
+                    
+                    <div class="link-output text-start" id="linkOutput">
+                        <h4 class="mb-3"><i class="fas fa-link me-2"></i>Your Generated Link:</h4>
+                        <p id="generatedLink" class="p-3 bg-dark rounded"></p>
+                        
+                        <div class="mt-4">
+                            <h5 class="mb-3">Send via WhatsApp</h5>
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label">Enter your WhatsApp number:</label>
+                                <input type="tel" class="form-control phone-input" id="phoneNumber" placeholder="Country code + phone number">
+                            </div>
+                            <button class="whatsapp-btn" id="whatsappBtn">
+                                <i class="fab fa-whatsapp me-2"></i>Send via WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="link-output" id="linkOutput">
-                <h4>Your Generated Link:</h4>
-                <p id="generatedLink" class="mt-3"></p>
-                <button class="btn btn-primary mt-3" id="copyBtn">Copy Link</button>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h2 class="text-center mb-4">How It Works</h2>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-link fa-2x text-gradient"></i>
+                        </div>
+                        <h4 class="text-center">1. Generate Link</h4>
+                        <p class="text-center">Click the circle button to create your unique access link</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-mobile-alt fa-2x text-gradient"></i>
+                        </div>
+                        <h4 class="text-center">2. Enter Number</h4>
+                        <p class="text-center">Provide your WhatsApp number in the input field</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="text-center mb-3">
+                            <i class="fab fa-whatsapp fa-2x text-gradient"></i>
+                        </div>
+                        <h4 class="text-center">3. Send Message</h4>
+                        <p class="text-center">Click the WhatsApp button to receive your link</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -114,7 +221,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center mb-3">
                 <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
                 <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
                 <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
@@ -122,7 +229,7 @@
                 <a href="#" class="social-icon"><i class="fab fa-x-twitter"></i></a>
                 <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
             </div>
-            <div class="text-center mt-3">
+            <div class="text-center">
                 <p>&copy; 2023 Hackpace. All rights reserved.</p>
             </div>
         </div>
@@ -136,10 +243,11 @@
             const generateBtn = document.getElementById('generateBtn');
             const linkOutput = document.getElementById('linkOutput');
             const generatedLink = document.getElementById('generatedLink');
-            const copyBtn = document.getElementById('copyBtn');
+            const whatsappBtn = document.getElementById('whatsappBtn');
+            const phoneNumberInput = document.getElementById('phoneNumber');
             
-            // Base URL for the generated link (you can customize this)
-            const baseUrl = 'http://bestteermb42clir6ux7xm76d4jjodh3fpahjqgbddbmfrgp4skg2wqd.onion';
+            // Base URL for the generated link
+            const baseUrl = 'https://hackpace.io/join/';
             
             generateBtn.addEventListener('click', function() {
                 // Generate a random code for the link
@@ -154,20 +262,28 @@
                 linkOutput.scrollIntoView({ behavior: 'smooth' });
             });
             
-            copyBtn.addEventListener('click', function() {
-                // Copy the generated link to clipboard
-                navigator.clipboard.writeText(generatedLink.textContent)
-                    .then(() => {
-                        // Change button text temporarily
-                        const originalText = copyBtn.textContent;
-                        copyBtn.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyBtn.textContent = originalText;
-                        }, 2000);
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy: ', err);
-                    });
+            whatsappBtn.addEventListener('click', function() {
+                const phoneNumber = phoneNumberInput.value.trim();
+                
+                if (!phoneNumber) {
+                    alert('Please enter your WhatsApp number');
+                    return;
+                }
+                
+                // Validate phone number (simple validation)
+                if (!/^[+]?[0-9\s\-\(\)]{10,}$/.test(phoneNumber)) {
+                    alert('Please enter a valid phone number');
+                    return;
+                }
+                
+                // Create WhatsApp message
+                const message = `Hello! Your Hackpace access link is: ${generatedLink.textContent}`;
+                
+                // Generate WhatsApp API URL
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                
+                // Open WhatsApp in a new tab
+                window.open(whatsappUrl, '_blank');
             });
         });
     </script>
