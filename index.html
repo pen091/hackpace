@@ -126,6 +126,15 @@
             max-height: 200px;
             overflow-y: auto;
         }
+        
+        .masked-url-container {
+            max-height: 150px;
+            overflow-y: auto;
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -165,10 +174,13 @@
                     </button>
                 </div>
                 
-                <div class="link-display flex items-center gap-3 mb-6 p-4 bg-gray-900 rounded-lg border border-gray-700">
-                    <input type="text" id="masked-url" class="flex-1 bg-transparent text-white py-2 px-3 rounded border border-gray-700" readonly placeholder="Your masked link will appear here">
-                    <button id="copy-btn" class="copy-btn w-12 h-12 rounded-full bg-blue-800 flex items-center justify-center">
-                        <i class="fas fa-copy"></i>
+                <div class="mb-6">
+                    <h3 class="text-yellow-400 mb-2">Masked URL:</h3>
+                    <div class="masked-url-container mb-3">
+                        <p id="masked-url" class="text-gray-300">Your masked URL will appear here</p>
+                    </div>
+                    <button id="copy-btn" class="copy-btn w-full py-3 px-4 bg-blue-800 rounded-lg font-semibold flex items-center justify-center gap-2">
+                        <i class="fas fa-copy"></i> Copy Masked URL
                     </button>
                 </div>
                 
@@ -177,11 +189,11 @@
                     <div class="space-y-2">
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-user-secret text-yellow-400"></i>
-                            <span>Save multiple URLs for masking</span>
+                            <span>Permanent URL storage</span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-ban text-yellow-400"></i>
-                            <span>Generate masked versions instantly</span>
+                            <i class="fas fa-database text-yellow-400"></i>
+                            <span>All saved URLs in masked output</span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-bolt text-yellow-400"></i>
@@ -301,16 +313,18 @@
     
     <script>
         // Array to store saved URLs
-        let savedUrls = [];
-        let currentUrlIndex = 0;
+        let savedUrls = JSON.parse(localStorage.getItem('hackpaceSavedUrls')) || [];
         
         // DOM elements
         const urlInput = document.getElementById('url-input');
         const saveBtn = document.getElementById('save-btn');
         const savedUrlsList = document.getElementById('saved-urls-list');
         const generateBtn = document.getElementById('generate-btn');
-        const maskedUrlInput = document.getElementById('masked-url');
+        const maskedUrlElement = document.getElementById('masked-url');
         const copyBtn = document.getElementById('copy-btn');
+        
+        // Initialize the saved URLs list
+        updateSavedUrlsList();
         
         // Save URL functionality
         saveBtn.addEventListener('click', function() {
@@ -329,12 +343,17 @@
             
             // Add to saved URLs
             savedUrls.push(formattedUrl);
+            
+            // Save to localStorage
+            localStorage.setItem('hackpaceSavedUrls', JSON.stringify(savedUrls));
+            
+            // Update UI
             updateSavedUrlsList();
             
             // Clear input
             urlInput.value = '';
             
-            showNotification('URL saved successfully!');
+            showNotification('URL saved permanently!');
         });
         
         // Update the saved URLs list
@@ -355,8 +374,6 @@
                 li.innerHTML = `
                     <span class="text-sm">${truncatedUrl}</span>
                     <div class="flex gap-1">
-                        <button class="use-url-btn text-xs py-1 px-2 bg-blue-700 rounded" data-index="${index}">Use</button>
-                        <button class="copy-url-btn text-xs py-1 px-2 bg-green-700 rounded" data-index="${index}">Copy</button>
                         <button class="delete-url-btn text-xs py-1 px-2 bg-red-700 rounded" data-index="${index}">×</button>
                     </div>
                 `;
@@ -364,26 +381,12 @@
                 savedUrlsList.appendChild(li);
             });
             
-            // Add event listeners to the new buttons
-            document.querySelectorAll('.use-url-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    currentUrlIndex = parseInt(this.getAttribute('data-index'));
-                    showNotification('URL selected for masking!');
-                });
-            });
-            
-            document.querySelectorAll('.copy-url-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    copyToClipboard(savedUrls[index]);
-                    showNotification('URL copied to clipboard!');
-                });
-            });
-            
+            // Add event listeners to the delete buttons
             document.querySelectorAll('.delete-url-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
                     savedUrls.splice(index, 1);
+                    localStorage.setItem('hackpaceSavedUrls', JSON.stringify(savedUrls));
                     updateSavedUrlsList();
                     showNotification('URL deleted!');
                 });
@@ -397,25 +400,21 @@
                 return;
             }
             
-            if (currentUrlIndex >= savedUrls.length) {
-                currentUrlIndex = 0;
-            }
+            // Create a masked version that includes all saved URLs
+            const maskedUrl = generateMaskedUrl();
+            maskedUrlElement.textContent = maskedUrl;
             
-            const url = savedUrls[currentUrlIndex];
-            const maskedUrl = generateMaskedUrl(url);
-            maskedUrlInput.value = maskedUrl;
-            
-            showNotification('Masked URL generated!');
+            showNotification('Masked URL generated with all saved URLs!');
         });
         
         // Copy functionality
         copyBtn.addEventListener('click', function() {
-            if (!maskedUrlInput.value) {
+            if (!maskedUrlElement.textContent || maskedUrlElement.textContent === 'Your masked URL will appear here') {
                 showNotification('Please generate a masked link first!', 'error');
                 return;
             }
             
-            copyToClipboard(maskedUrlInput.value);
+            copyToClipboard(maskedUrlElement.textContent);
             showNotification('Masked URL copied to clipboard!');
         });
         
@@ -528,8 +527,8 @@
         });
         
         // Helper functions
-        function generateMaskedUrl(url) {
-            // Create a fake masked version of the URL
+        function generateMaskedUrl() {
+            // Create a masked version that includes all saved URLs
             const domains = ['secure', 'private', 'encrypted', 'hidden', 'anonymous'];
             const tlds = ['link', 'gate', 'path', 'route', 'access'];
             
@@ -537,7 +536,10 @@
             const randomTld = tlds[Math.floor(Math.random() * tlds.length)];
             const randomId = Math.random().toString(36).substring(2, 10);
             
-            return `https://${randomDomain}-${randomId}.${randomTld}`;
+            // Include all saved URLs in the masked output
+            const allUrls = savedUrls.join('\n');
+            
+            return `https://${randomDomain}-${randomId}.${randomTld}\n\nContains the following URLs:\n${allUrls}`;
         }
         
         function copyToClipboard(text) {
@@ -565,9 +567,6 @@
                 notification.classList.remove('show');
             }, 3000);
         }
-        
-        // Initialize the saved URLs list
-        updateSavedUrlsList();
     </script>
 </body>
 </html>
