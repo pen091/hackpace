@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Link Masking Tool</title>
+    <title>SecureLink - Share Links Securely</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -79,11 +79,6 @@
             align-items: center;
             gap: 10px;
             color: #fdbb2d;
-        }
-        
-        .link-generation {
-            text-align: center;
-            padding: 20px 0;
         }
         
         .link-display {
@@ -189,7 +184,7 @@
         
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-top: 40px;
         }
@@ -198,7 +193,7 @@
             background: rgba(40, 40, 40, 0.8);
             backdrop-filter: blur(10px);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -210,19 +205,19 @@
         }
         
         .stat-card i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 15px;
             color: #fdbb2d;
         }
         
         .stat-card h3 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 10px;
             color: #fff;
         }
         
         .stat-card p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             opacity: 0.9;
             color: #ccc;
         }
@@ -311,6 +306,21 @@
             padding: 15px;
             font-size: 1.1rem;
         }
+        
+        .secure-link {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 10px;
+            border: 1px solid rgba(253, 187, 45, 0.3);
+        }
+        
+        .secure-link p {
+            margin-bottom: 15px;
+            color: #fdbb2d;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -318,24 +328,20 @@
         <header>
             <div class="logo">
                 <i class="fab fa-tor-onion tor-icon"></i>
-                <div class="logo-text">SecureMask</div>
+                <div class="logo-text">SecureLink</div>
             </div>
-            <h1>Secure Link Masking Tool</h1>
-            <p>Protect your privacy with automatically generated masked links and secure browsing with Tor</p>
+            <h1>Secure Link Sharing Platform</h1>
+            <p>Share your links securely with privacy protection and Tor integration</p>
         </header>
         
         <div class="main-content">
             <div class="card">
-                <h2><i class="fas fa-link"></i> Secure Link Generator</h2>
+                <h2><i class="fas fa-shield-alt"></i> Your Secure Link</h2>
                 
-                <div class="link-generation">
-                    <p>Click to generate a secure masked link:</p>
-                    <button id="generate-btn">
-                        <i class="fas fa-magic"></i> Generate Secure Link
-                    </button>
-                    
+                <div class="secure-link">
+                    <p>Copy this secure link to share with others:</p>
                     <div class="link-display">
-                        <input type="text" id="masked-url" readonly placeholder="Your secure link will appear here">
+                        <input type="text" id="masked-url" value="https://securelink.example/x78fGt45jK9mN" readonly>
                         <button id="copy-btn" class="copy-btn">
                             <i class="fas fa-copy"></i> Copy
                         </button>
@@ -345,16 +351,16 @@
                 <div style="margin-top: 20px;">
                     <h3 style="color: #fdbb2d; margin-bottom: 10px;">Features:</h3>
                     <div class="feature">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Automatic secure link generation</span>
+                        <i class="fas fa-user-secret"></i>
+                        <span>Secure and encrypted link sharing</span>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-user-secret"></i>
+                        <i class="fas fa-ban"></i>
                         <span>No tracking or logging</span>
                     </div>
                     <div class="feature">
-                        <i class="fas fa-lock"></i>
-                        <span>One-click copy functionality</span>
+                        <i class="fas fa-bolt"></i>
+                        <span>Instant access with one-click copy</span>
                     </div>
                 </div>
             </div>
@@ -424,11 +430,29 @@
                         <i class="fab fa-youtube"></i> Watch on YouTube
                     </a>
                 </div>
+                
+                <div class="stat-card">
+                    <i class="fab fa-telegram"></i>
+                    <h3>100+</h3>
+                    <p>Telegram Members</p>
+                    <a href="https://t.me/yourchannel" target="_blank">
+                        <i class="fab fa-telegram"></i> Join Telegram
+                    </a>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fab fa-facebook"></i>
+                    <h3>2,000+</h3>
+                    <p>Active Facebook</p>
+                    <a href="https://facebook.com/yourprofile" target="_blank">
+                        <i class="fab fa-facebook"></i> Follow on Facebook
+                    </a>
+                </div>
             </div>
         </div>
         
         <footer>
-            <p>© 2023 SecureMask | Privacy Protection Tools</p>
+            <p>© 2023 SecureLink | Privacy Protection Tools</p>
             <p>All rights reserved</p>
         </footer>
     </div>
@@ -436,37 +460,9 @@
     <div class="notification" id="notification">Link copied to clipboard!</div>
     
     <script>
-        // Link generation functionality
-        document.getElementById('generate-btn').addEventListener('click', function() {
-            // Generate a random masked URL
-            const randomId = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
-            const domains = ['secure-link', 'privacy-protected', 'anon-redirect', 'masked-url'];
-            const tlds = ['com', 'net', 'org', 'io'];
-            
-            const randomDomain = domains[Math.floor(Math.random() * domains.length)];
-            const randomTld = tlds[Math.floor(Math.random() * tlds.length)];
-            
-            const maskedUrl = `https://${randomDomain}.${randomTld}/x${randomId}y`;
-            document.getElementById('masked-url').value = maskedUrl;
-            
-            // Show notification
-            const notification = document.getElementById('notification');
-            notification.textContent = 'Secure link generated!';
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
-        });
-        
         // Copy functionality
         document.getElementById('copy-btn').addEventListener('click', function() {
             const maskedUrl = document.getElementById('masked-url');
-            
-            if (!maskedUrl.value) {
-                alert('Please generate a secure link first');
-                return;
-            }
             
             maskedUrl.select();
             document.execCommand('copy');
@@ -593,11 +589,6 @@
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
-        });
-        
-        // Generate a link on page load
-        window.addEventListener('load', function() {
-            document.getElementById('generate-btn').click();
         });
     </script>
 </body>
