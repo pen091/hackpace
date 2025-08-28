@@ -105,6 +105,27 @@
         .guide-content::-webkit-scrollbar-thumb:hover {
             background: #b21f1f;
         }
+        
+        .url-input {
+            background: rgba(30, 30, 30, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .url-input:focus {
+            border-color: #fdbb2d;
+            box-shadow: 0 0 0 2px rgba(253, 187, 45, 0.2);
+        }
+        
+        .save-btn {
+            background: linear-gradient(to right, #1a2a6c, #2a4b8c);
+        }
+        
+        .saved-urls {
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -125,14 +146,27 @@
                 </h2>
                 
                 <div class="mb-6">
-                    <p class="text-gray-300 mb-4">Click to generate a secure masked link:</p>
+                    <div class="flex gap-2 mb-4">
+                        <input type="url" id="url-input" class="flex-1 py-2 px-4 rounded-lg url-input" placeholder="Enter URL to mask">
+                        <button id="save-btn" class="save-btn py-2 px-4 rounded-lg font-semibold">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </div>
+                    
+                    <div class="saved-urls p-3 bg-gray-900 rounded-lg border border-gray-700 mb-4">
+                        <h3 class="text-yellow-400 mb-2">Saved URLs:</h3>
+                        <ul id="saved-urls-list" class="text-gray-300">
+                            <!-- Saved URLs will appear here -->
+                        </ul>
+                    </div>
+                    
                     <button id="generate-btn" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-red-700 rounded-lg font-semibold flex items-center justify-center gap-2">
-                        <i class="fas fa-magic"></i> Generate Secure Link
+                        <i class="fas fa-magic"></i> Generate Masked Link
                     </button>
                 </div>
                 
                 <div class="link-display flex items-center gap-3 mb-6 p-4 bg-gray-900 rounded-lg border border-gray-700">
-                    <input type="text" id="masked-url" class="flex-1 bg-transparent text-white py-2 px-3 rounded border border-gray-700" readonly placeholder="Your secure link will appear here">
+                    <input type="text" id="masked-url" class="flex-1 bg-transparent text-white py-2 px-3 rounded border border-gray-700" readonly placeholder="Your masked link will appear here">
                     <button id="copy-btn" class="copy-btn w-12 h-12 rounded-full bg-blue-800 flex items-center justify-center">
                         <i class="fas fa-copy"></i>
                     </button>
@@ -143,11 +177,11 @@
                     <div class="space-y-2">
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-user-secret text-yellow-400"></i>
-                            <span>Automatic secure link generation</span>
+                            <span>Save multiple URLs for masking</span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-ban text-yellow-400"></i>
-                            <span>No tracking or logging</span>
+                            <span>Generate masked versions instantly</span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-bolt text-yellow-400"></i>
@@ -210,7 +244,7 @@
                     <i class="fab fa-tiktok text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">10,000+</h3>
                     <p class="text-gray-300 mb-3">Active Community</p>
-                    <a href="https://tiktok.com/@hackpace" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <a href="https://tiktok.com/@yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-tiktok"></i> Follow
                     </a>
                 </div>
@@ -228,7 +262,7 @@
                     <i class="fab fa-youtube text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">120+</h3>
                     <p class="text-gray-300 mb-3">Workshops Hosted</p>
-                    <a href="https://youtube.com/@hackpace" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <a href="https://youtube.com/yourchannel" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-youtube"></i> Watch
                     </a>
                 </div>
@@ -237,7 +271,7 @@
                     <i class="fab fa-telegram text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">100+</h3>
                     <p class="text-gray-300 mb-3">Telegram Members</p>
-                    <a href="https://t.me/penhacks" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <a href="https://t.me/yourchannel" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-telegram"></i> Join
                     </a>
                 </div>
@@ -266,33 +300,123 @@
     </div>
     
     <script>
-        // URL to be masked (hardcoded as requested)
-        const targetUrl = "http://bestteermb42clir6ux7xm76d4jjodh3fpahjqgbddbmfrgp4skg2wqd.onion";
+        // Array to store saved URLs
+        let savedUrls = [];
+        let currentUrlIndex = 0;
         
-        // Link generation functionality
-        document.getElementById('generate-btn').addEventListener('click', function() {
-            // Create a masked version of the URL
-            const maskedUrl = generateMaskedUrl(targetUrl);
-            document.getElementById('masked-url').value = maskedUrl;
-            
-            // Show notification
-            showNotification('Secure link generated!');
-        });
+        // DOM elements
+        const urlInput = document.getElementById('url-input');
+        const saveBtn = document.getElementById('save-btn');
+        const savedUrlsList = document.getElementById('saved-urls-list');
+        const generateBtn = document.getElementById('generate-btn');
+        const maskedUrlInput = document.getElementById('masked-url');
+        const copyBtn = document.getElementById('copy-btn');
         
-        // Copy functionality
-        document.getElementById('copy-btn').addEventListener('click', function() {
-            const maskedUrl = document.getElementById('masked-url');
+        // Save URL functionality
+        saveBtn.addEventListener('click', function() {
+            const url = urlInput.value.trim();
             
-            if (!maskedUrl.value) {
-                showNotification('Please generate a link first!', 'error');
+            if (!url) {
+                showNotification('Please enter a URL!', 'error');
                 return;
             }
             
-            maskedUrl.select();
-            document.execCommand('copy');
+            // Add http:// if missing
+            let formattedUrl = url;
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                formattedUrl = 'https://' + url;
+            }
             
-            // Show notification
-            showNotification('Link copied to clipboard!');
+            // Add to saved URLs
+            savedUrls.push(formattedUrl);
+            updateSavedUrlsList();
+            
+            // Clear input
+            urlInput.value = '';
+            
+            showNotification('URL saved successfully!');
+        });
+        
+        // Update the saved URLs list
+        function updateSavedUrlsList() {
+            savedUrlsList.innerHTML = '';
+            
+            if (savedUrls.length === 0) {
+                savedUrlsList.innerHTML = '<li class="text-gray-500 text-sm py-1">No URLs saved yet</li>';
+                return;
+            }
+            
+            savedUrls.forEach((url, index) => {
+                const li = document.createElement('li');
+                li.className = 'flex justify-between items-center py-1';
+                
+                const truncatedUrl = url.length > 40 ? url.substring(0, 40) + '...' : url;
+                
+                li.innerHTML = `
+                    <span class="text-sm">${truncatedUrl}</span>
+                    <div class="flex gap-1">
+                        <button class="use-url-btn text-xs py-1 px-2 bg-blue-700 rounded" data-index="${index}">Use</button>
+                        <button class="copy-url-btn text-xs py-1 px-2 bg-green-700 rounded" data-index="${index}">Copy</button>
+                        <button class="delete-url-btn text-xs py-1 px-2 bg-red-700 rounded" data-index="${index}">×</button>
+                    </div>
+                `;
+                
+                savedUrlsList.appendChild(li);
+            });
+            
+            // Add event listeners to the new buttons
+            document.querySelectorAll('.use-url-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentUrlIndex = parseInt(this.getAttribute('data-index'));
+                    showNotification('URL selected for masking!');
+                });
+            });
+            
+            document.querySelectorAll('.copy-url-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    copyToClipboard(savedUrls[index]);
+                    showNotification('URL copied to clipboard!');
+                });
+            });
+            
+            document.querySelectorAll('.delete-url-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    savedUrls.splice(index, 1);
+                    updateSavedUrlsList();
+                    showNotification('URL deleted!');
+                });
+            });
+        }
+        
+        // Generate masked URL
+        generateBtn.addEventListener('click', function() {
+            if (savedUrls.length === 0) {
+                showNotification('Please save a URL first!', 'error');
+                return;
+            }
+            
+            if (currentUrlIndex >= savedUrls.length) {
+                currentUrlIndex = 0;
+            }
+            
+            const url = savedUrls[currentUrlIndex];
+            const maskedUrl = generateMaskedUrl(url);
+            maskedUrlInput.value = maskedUrl;
+            
+            showNotification('Masked URL generated!');
+        });
+        
+        // Copy functionality
+        copyBtn.addEventListener('click', function() {
+            if (!maskedUrlInput.value) {
+                showNotification('Please generate a masked link first!', 'error');
+                return;
+            }
+            
+            copyToClipboard(maskedUrlInput.value);
+            showNotification('Masked URL copied to clipboard!');
         });
         
         // Tor download functionality
@@ -405,11 +529,24 @@
         
         // Helper functions
         function generateMaskedUrl(url) {
-            // Create a masked version of the URL
-            const domain = url.split('//')[1].split('/')[0];
-            const path = url.split(domain)[1];
-            const maskedDomain = btoa(domain).replace(/=/g, '');
-            return `https://secure.hackpace.io/${maskedDomain}${path}`;
+            // Create a fake masked version of the URL
+            const domains = ['secure', 'private', 'encrypted', 'hidden', 'anonymous'];
+            const tlds = ['link', 'gate', 'path', 'route', 'access'];
+            
+            const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+            const randomTld = tlds[Math.floor(Math.random() * tlds.length)];
+            const randomId = Math.random().toString(36).substring(2, 10);
+            
+            return `https://${randomDomain}-${randomId}.${randomTld}`;
+        }
+        
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
         }
         
         function showNotification(message, type = 'success') {
@@ -429,10 +566,8 @@
             }, 3000);
         }
         
-        // Generate a link on page load
-        window.addEventListener('load', function() {
-            document.getElementById('generate-btn').click();
-        });
+        // Initialize the saved URLs list
+        updateSavedUrlsList();
     </script>
 </body>
 </html>
