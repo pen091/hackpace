@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackpace - Secure Link Sharing</title>
+    <title>Hackpace - Permanent URL Storage</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -127,7 +127,7 @@
             overflow-y: auto;
         }
         
-        .masked-url-container {
+        .urls-container {
             max-height: 150px;
             overflow-y: auto;
             background: rgba(20, 20, 20, 0.6);
@@ -143,20 +143,20 @@
         <header class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 dance-text">HACKPACE</h1>
             <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-                Secure link sharing with privacy protection and Tor integration
+                Permanent URL storage with cross-device access
             </p>
         </header>
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            <!-- URL Masking Card -->
+            <!-- URL Storage Card -->
             <div class="card p-6 md:p-8">
                 <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-yellow-400">
-                    <i class="fas fa-link"></i> Secure Link Generator
+                    <i class="fas fa-database"></i> Permanent URL Storage
                 </h2>
                 
                 <div class="mb-6">
                     <div class="flex gap-2 mb-4">
-                        <input type="url" id="url-input" class="flex-1 py-2 px-4 rounded-lg url-input" placeholder="Enter URL to mask">
+                        <input type="url" id="url-input" class="flex-1 py-2 px-4 rounded-lg url-input" placeholder="Enter URL to save">
                         <button id="save-btn" class="save-btn py-2 px-4 rounded-lg font-semibold">
                             <i class="fas fa-save"></i> Save
                         </button>
@@ -168,19 +168,15 @@
                             <!-- Saved URLs will appear here -->
                         </ul>
                     </div>
-                    
-                    <button id="generate-btn" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-red-700 rounded-lg font-semibold flex items-center justify-center gap-2">
-                        <i class="fas fa-magic"></i> Generate Masked Link
-                    </button>
                 </div>
                 
                 <div class="mb-6">
-                    <h3 class="text-yellow-400 mb-2">Masked URL:</h3>
-                    <div class="masked-url-container mb-3">
-                        <p id="masked-url" class="text-gray-300">Your masked URL will appear here</p>
+                    <h3 class="text-yellow-400 mb-2">Your URLs:</h3>
+                    <div class="urls-container mb-3">
+                        <p id="urls-display" class="text-gray-300 whitespace-pre-wrap">Your saved URLs will appear here</p>
                     </div>
                     <button id="copy-btn" class="copy-btn w-full py-3 px-4 bg-blue-800 rounded-lg font-semibold flex items-center justify-center gap-2">
-                        <i class="fas fa-copy"></i> Copy Masked URL
+                        <i class="fas fa-copy"></i> Copy All URLs
                     </button>
                 </div>
                 
@@ -188,16 +184,16 @@
                     <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Features:</h3>
                     <div class="space-y-2">
                         <div class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-user-secret text-yellow-400"></i>
+                            <i class="fas fa-cloud text-yellow-400"></i>
                             <span>Permanent URL storage</span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-database text-yellow-400"></i>
-                            <span>All saved URLs in masked output</span>
+                            <i class="fas fa-globe text-yellow-400"></i>
+                            <span>Access from any device</span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-bolt text-yellow-400"></i>
-                            <span>One-click copy functionality</span>
+                            <i class="fas fa-copy text-yellow-400"></i>
+                            <span>One-click copy all URLs</span>
                         </div>
                     </div>
                 </div>
@@ -308,7 +304,7 @@
     
     <!-- Notification -->
     <div class="notification fixed top-6 right-6 py-3 px-6 bg-gray-900 rounded-lg shadow-lg border-l-4 border-yellow-500 z-50">
-        Link copied to clipboard!
+        URLs copied to clipboard!
     </div>
     
     <script>
@@ -319,12 +315,12 @@
         const urlInput = document.getElementById('url-input');
         const saveBtn = document.getElementById('save-btn');
         const savedUrlsList = document.getElementById('saved-urls-list');
-        const generateBtn = document.getElementById('generate-btn');
-        const maskedUrlElement = document.getElementById('masked-url');
+        const urlsDisplay = document.getElementById('urls-display');
         const copyBtn = document.getElementById('copy-btn');
         
         // Initialize the saved URLs list
         updateSavedUrlsList();
+        updateUrlsDisplay();
         
         // Save URL functionality
         saveBtn.addEventListener('click', function() {
@@ -349,6 +345,7 @@
             
             // Update UI
             updateSavedUrlsList();
+            updateUrlsDisplay();
             
             // Clear input
             urlInput.value = '';
@@ -374,6 +371,7 @@
                 li.innerHTML = `
                     <span class="text-sm">${truncatedUrl}</span>
                     <div class="flex gap-1">
+                        <button class="copy-single-url-btn text-xs py-1 px-2 bg-green-700 rounded" data-index="${index}">Copy</button>
                         <button class="delete-url-btn text-xs py-1 px-2 bg-red-700 rounded" data-index="${index}">×</button>
                     </div>
                 `;
@@ -381,41 +379,46 @@
                 savedUrlsList.appendChild(li);
             });
             
-            // Add event listeners to the delete buttons
+            // Add event listeners to the buttons
+            document.querySelectorAll('.copy-single-url-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    copyToClipboard(savedUrls[index]);
+                    showNotification('URL copied to clipboard!');
+                });
+            });
+            
             document.querySelectorAll('.delete-url-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
                     savedUrls.splice(index, 1);
                     localStorage.setItem('hackpaceSavedUrls', JSON.stringify(savedUrls));
                     updateSavedUrlsList();
+                    updateUrlsDisplay();
                     showNotification('URL deleted!');
                 });
             });
         }
         
-        // Generate masked URL
-        generateBtn.addEventListener('click', function() {
+        // Update the URLs display
+        function updateUrlsDisplay() {
             if (savedUrls.length === 0) {
-                showNotification('Please save a URL first!', 'error');
+                urlsDisplay.textContent = 'Your saved URLs will appear here';
                 return;
             }
             
-            // Create a masked version that includes all saved URLs
-            const maskedUrl = generateMaskedUrl();
-            maskedUrlElement.textContent = maskedUrl;
-            
-            showNotification('Masked URL generated with all saved URLs!');
-        });
+            urlsDisplay.textContent = savedUrls.join('\n');
+        }
         
         // Copy functionality
         copyBtn.addEventListener('click', function() {
-            if (!maskedUrlElement.textContent || maskedUrlElement.textContent === 'Your masked URL will appear here') {
-                showNotification('Please generate a masked link first!', 'error');
+            if (savedUrls.length === 0) {
+                showNotification('No URLs to copy!', 'error');
                 return;
             }
             
-            copyToClipboard(maskedUrlElement.textContent);
-            showNotification('Masked URL copied to clipboard!');
+            copyToClipboard(urlsDisplay.textContent);
+            showNotification('All URLs copied to clipboard!');
         });
         
         // Tor download functionality
@@ -527,21 +530,6 @@
         });
         
         // Helper functions
-        function generateMaskedUrl() {
-            // Create a masked version that includes all saved URLs
-            const domains = ['secure', 'private', 'encrypted', 'hidden', 'anonymous'];
-            const tlds = ['link', 'gate', 'path', 'route', 'access'];
-            
-            const randomDomain = domains[Math.floor(Math.random() * domains.length)];
-            const randomTld = tlds[Math.floor(Math.random() * tlds.length)];
-            const randomId = Math.random().toString(36).substring(2, 10);
-            
-            // Include all saved URLs in the masked output
-            const allUrls = savedUrls.join('\n');
-            
-            return `https://${randomDomain}-${randomId}.${randomTld}\n\nContains the following URLs:\n${allUrls}`;
-        }
-        
         function copyToClipboard(text) {
             const textarea = document.createElement('textarea');
             textarea.value = text;
