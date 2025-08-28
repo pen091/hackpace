@@ -89,6 +89,21 @@
             margin-top: 15px;
             border-left: 4px solid #fdbb2d;
         }
+        
+        .refresh-btn {
+            background: linear-gradient(to right, #1a2a6c, #2a4b8c);
+            padding: 8px 15px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .refresh-btn:hover {
+            background: linear-gradient(to right, #2a4b8c, #3a6bcc);
+        }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -124,10 +139,17 @@
                     </div>
                     
                     <div class="mb-4 mt-6">
-                        <h3 class="text-yellow-400 mb-2">Shared URLs:</h3>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-yellow-400 mb-2">Shared URLs:</h3>
+                            <button id="refresh-btn" class="refresh-btn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
                         <div class="urls-container p-3 bg-gray-900 rounded-lg border border-gray-700">
                             <ul id="saved-urls-list" class="text-gray-300">
-                                <li class="py-2 border-b border-gray-700">Loading shared URLs...</li>
+                                <li class="py-2 border-b border-gray-700 flex items-center">
+                                    <span class="loader mr-2"></span> Loading shared URLs...
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -201,14 +223,18 @@
             </h2>
             
             <p class="text-gray-300 mb-8">
-                With over 5 years of experience in cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone, regardless of their technical background. I believe in empowering users to take control of their online privacy.
+                With over 10+ years of experience in C programming 
+                With over 4+ years of experience in Python programming
+                With over 10+ years of experience in Bash scripting programming
+                With over 8+ years of experience in Linux administration
+                cybersecurity and privacy tools development, I'm passionate about creating solutions that help people protect their digital footprint. My work focuses on making privacy tools accessible to everyone, regardless of their technical background. I believe in empowering users to take control of their online privacy.
             </p>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
                     <i class="fab fa-tiktok text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">10,000+</h3>
-                    <p class="text-gray-300 mb-3">Active Community</p>
+                    <p class="text-gray-300 mb-3">Tiktok Active Community</p>
                     <a href="https://tiktok.com/@yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-tiktok"></i> Follow
                     </a>
@@ -217,7 +243,7 @@
                 <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
                     <i class="fab fa-github text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">350+</h3>
-                    <p class="text-gray-300 mb-3">Projects Launched</p>
+                    <p class="text-gray-300 mb-3">github Projects Launched</p>
                     <a href="https://github.com/yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-github"></i> View
                     </a>
@@ -254,7 +280,7 @@
         
         <!-- Footer -->
         <footer class="text-center pt-8 border-t border-gray-800">
-            <p class="text-gray-400">© 2023 Hackpace | Privacy Protection Tools</p>
+            <p class="text-gray-400">© 2025 Hackpace | Privacy Protection Tools</p>
             <p class="text-gray-500 text-sm mt-2">All rights reserved</p>
         </footer>
     </div>
@@ -267,13 +293,13 @@
         const DATA_REPO_OWNER = 'pen091'; // Your GitHub username
         const DATA_REPO = 'hackpace'; // Repository to store URLs
         const DATA_FILE = 'urls.json'; // File to store URLs
-
-        const JSON_URL = `https://raw.githubusercontent.com/${DATA_REPO_OWNER}/${DATA_REPO}/main/${DATA_FILE}`;
+        
         // DOM elements
         const urlInput = document.getElementById('url-input');
         const saveBtn = document.getElementById('save-btn');
         const savedUrlsList = document.getElementById('saved-urls-list');
         const copyAllBtn = document.getElementById('copy-all-btn');
+        const refreshBtn = document.getElementById('refresh-btn');
         const notification = document.getElementById('notification');
         
         // Load saved URLs on page load
@@ -323,10 +349,16 @@
             }
         });
         
+        // Refresh button functionality
+        refreshBtn.addEventListener('click', function() {
+            // Add cache busting parameter to force reload
+            loadSavedUrls(true);
+        });
+        
         // Copy all URLs
         copyAllBtn.addEventListener('click', function() {
-            const urls = Array.from(savedUrlsList.querySelectorAll('li'))
-                .map(li => li.querySelector('a').href);
+            const urls = Array.from(savedUrlsList.querySelectorAll('li a'))
+                .map(a => a.href);
             
             if (urls.length === 0) {
                 showNotification('No URLs to copy!', 'error');
@@ -339,16 +371,23 @@
         });
         
         // Load saved URLs from public GitHub repository
-        async function loadSavedUrls() {
+        async function loadSavedUrls(forceRefresh = false) {
             try {
+                // Show loading state
+                savedUrlsList.innerHTML = '<li class="py-2 border-b border-gray-700 flex items-center"><span class="loader mr-2"></span> Loading shared URLs...</li>';
+                
+                // Add cache busting parameter if force refresh is requested
+                const cacheBuster = forceRefresh ? `?t=${Date.now()}` : '';
+                
                 // Try to load from GitHub first
                 const response = await fetch(
-                    `https://raw.githubusercontent.com/${DATA_REPO_OWNER}/${DATA_REPO}/main/${DATA_FILE}?t=${Date.now()}`
+                    `https://raw.githubusercontent.com/${DATA_REPO_OWNER}/${DATA_REPO}/main/${DATA_FILE}${cacheBuster}`
                 );
                 
                 if (response.ok) {
                     const urls = await response.json();
                     displayUrls(urls);
+                    showNotification('URLs loaded successfully!', 'success');
                     return;
                 }
                 
@@ -363,6 +402,8 @@
                 // Fall back to localStorage
                 const savedUrls = JSON.parse(localStorage.getItem('hackpaceUrls') || '[]');
                 displayUrls(savedUrls);
+                
+                showNotification('Error loading from GitHub. Using local storage.', 'error');
             }
         }
         
@@ -370,18 +411,22 @@
         function displayUrls(urls) {
             savedUrlsList.innerHTML = '';
             
-            if (urls.length === 0) {
+            if (!urls || urls.length === 0) {
                 savedUrlsList.innerHTML = '<li class="py-2 text-gray-500">No URLs saved yet</li>';
                 return;
             }
             
-            urls.forEach(url => {
+            // Handle both string and object formats
+            urls.forEach(item => {
+                const url = typeof item === 'string' ? item : item.url;
+                const title = typeof item === 'string' ? url : (item.title || url);
+                
                 const li = document.createElement('li');
                 li.className = 'py-2 border-b border-gray-700';
                 
                 const a = document.createElement('a');
                 a.href = url;
-                a.textContent = url.length > 50 ? url.substring(0, 50) + '...' : url;
+                a.textContent = title.length > 50 ? title.substring(0, 50) + '...' : title;
                 a.target = '_blank';
                 a.className = 'text-blue-400 hover:text-blue-300';
                 a.rel = 'noopener noreferrer';
@@ -520,7 +565,6 @@
             document.body.removeChild(a);
             
             showNotification(`Downloading Tor for ${selectedOS}...`);
-            fetch(`${JSON_URL}?t=${Date.now()}`)
         });
     </script>
 </body>
