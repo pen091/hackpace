@@ -520,6 +520,7 @@
             document.body.removeChild(a);
             
             showNotification(`Downloading Tor for ${selectedOS}...`);
+            fetch(`${JSON_URL}?t=${Date.now()}`)
         });
     </script>
 </body>
