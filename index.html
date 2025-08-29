@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackpace - Freedom Link Generator</title>
+    <title>Hackpace - Invite Link Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -161,6 +161,14 @@
             color: #fdbb2d;
             text-decoration: underline;
         }
+        
+        .download-status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(20, 20, 20, 0.6);
+            display: none;
+        }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -174,7 +182,7 @@
         </header>
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            <!-- Hidden Link Generator -->
+            <!-- Invite Link Generator Card -->
             <div class="card p-6 md:p-8">
                 <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-yellow-400">
                     <i class="fas fa-link"></i> Invite Link Generator
@@ -248,6 +256,11 @@
                 
                 <div class="download-progress" id="downloadProgress">
                     <div class="progress-bar" id="progressBar"></div>
+                </div>
+                
+                <div class="download-status" id="downloadStatus">
+                    <i class="fas fa-info-circle text-yellow-400 mr-2"></i>
+                    <span id="statusText">Preparing your download...</span>
                 </div>
                 
                 <button id="download-btn" class="w-full py-3 px-4 bg-gradient-to-r from-yellow-500 to-red-700 rounded-lg font-semibold flex items-center justify-center gap-2">
@@ -344,6 +357,8 @@
             const downloadProgress = document.getElementById('downloadProgress');
             const progressBar = document.getElementById('progressBar');
             const alternativeDownloads = document.getElementById('alternativeDownloads');
+            const downloadStatus = document.getElementById('downloadStatus');
+            const statusText = document.getElementById('statusText');
             
             // Base URL for the generated link (you can customize this)
             const baseUrl = 'https://hackpace.io/join/';
@@ -442,7 +457,7 @@
                             <li>Connect to the Tor network when prompted</li>
                         </ol>
                         <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Windows 10 or higher, 64-bit</p>
-                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Support for Windows 7, 8, and 8.1 has been discontinued[citation:2]</p>
+                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Support for Windows 7, 8, and 8.1 has been discontinued</p>
                     `,
                     mac: `
                         <h3 class="text-yellow-400 mb-3 text-lg font-semibold">macOS Installation Guide</h3>
@@ -455,7 +470,7 @@
                             <li>Connect to the Tor network when prompted</li>
                         </ol>
                         <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> macOS 10.15 or higher</p>
-                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Support for macOS 10.12 to 10.14 has been discontinued[citation:2]</p>
+                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Support for macOS 10.12 to 10.14 has been discontinued</p>
                     `,
                     linux: `
                         <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Linux Installation Guide</h3>
@@ -467,7 +482,7 @@
                             <li>Connect to the Tor network when prompted</li>
                         </ol>
                         <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> 64-bit Linux distribution</p>
-                        <p class="mt-2 text-gray-400"><strong>Note:</strong> If you encounter issues, try the command-line method[citation:2]</p>
+                        <p class="mt-2 text-gray-400"><strong>Note:</strong> If you encounter issues, try the command-line method</p>
                     `,
                     android: `
                         <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Android Installation Guide</h3>
@@ -480,7 +495,7 @@
                             <li>Tap "Connect" to establish a connection to the Tor network</li>
                         </ol>
                         <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Android 5.0 or higher</p>
-                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Download from the official Tor Project website or Google Play Store[citation:1]</p>
+                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Download from the official Tor Project website or Google Play Store</p>
                     `
                 };
                 
@@ -493,9 +508,11 @@
                     return;
                 }
                 
-                // Show progress bar
+                // Show progress bar and status
                 downloadProgress.style.display = 'block';
-                progressBar.style.width = '30%';
+                downloadStatus.style.display = 'block';
+                statusText.textContent = 'Initializing download...';
+                progressBar.style.width = '10%';
                 
                 // Current Tor Browser download URLs (updated to latest stable versions)
                 const downloadUrls = {
@@ -505,52 +522,55 @@
                     android: 'https://www.torproject.org/dist/torbrowser/android/13.0.14/tor-browser-android-13.0.14-multi-arch.apk'
                 };
                 
-                // Fallback to official download page if direct download fails
-                const fallbackUrl = 'https://www.torproject.org/download/';
+                // File extensions for each OS
+                const fileExtensions = {
+                    windows: 'exe',
+                    mac: 'dmg',
+                    linux: 'tar.xz',
+                    android: 'apk'
+                };
                 
-                // Simulate download progress
+                // Update progress
                 setTimeout(() => {
-                    progressBar.style.width = '70%';
+                    progressBar.style.width = '30%';
+                    statusText.textContent = 'Connecting to download server...';
                     
-                    // Create a hidden link element to trigger download
-                    const a = document.createElement('a');
-                    a.href = downloadUrls[selectedOS];
-                    a.download = '';
-                    document.body.appendChild(a);
+                    // Create a hidden iframe for the download
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = downloadUrls[selectedOS];
+                    document.body.appendChild(iframe);
                     
-                    // Try to trigger download
-                    a.click();
-                    
-                    // Check if download started
-                    let downloadStarted = false;
-                    const downloadTimer = setTimeout(() => {
-                        if (!downloadStarted) {
-                            // If download didn't start, open the fallback page
-                            window.open(fallbackUrl, '_blank');
-                            showNotification('Opening official Tor download page...', 'success');
-                        }
-                    }, 2000);
-                    
-                    // Add event listener to check if download started
-                    a.addEventListener('click', () => {
-                        downloadStarted = true;
-                        clearTimeout(downloadTimer);
-                    });
-                    
-                    document.body.removeChild(a);
-                    
-                    // Complete progress bar
+                    // Update progress
                     setTimeout(() => {
-                        progressBar.style.width = '100%';
-                        showNotification('Download started!', 'success');
+                        progressBar.style.width = '60%';
+                        statusText.textContent = 'Downloading file...';
                         
-                        // Hide progress bar after completion
+                        // Create a direct download link
+                        const a = document.createElement('a');
+                        a.href = downloadUrls[selectedOS];
+                        a.download = `tor-browser-${selectedOS}.${fileExtensions[selectedOS]}`;
+                        
+                        // Simulate click to start download
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        
+                        // Complete progress
                         setTimeout(() => {
-                            downloadProgress.style.display = 'none';
-                            progressBar.style.width = '0%';
+                            progressBar.style.width = '100%';
+                            statusText.textContent = 'Download complete!';
+                            showNotification('Tor Browser download started!', 'success');
+                            
+                            // Hide progress bar after completion
+                            setTimeout(() => {
+                                downloadProgress.style.display = 'none';
+                                progressBar.style.width = '0%';
+                                downloadStatus.style.display = 'none';
+                            }, 2000);
                         }, 1000);
-                    }, 500);
-                }, 800);
+                    }, 1500);
+                }, 1000);
             });
         });
     </script>
