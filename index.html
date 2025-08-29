@@ -138,6 +138,29 @@
             background: linear-gradient(to right, #fdbb2d, #b21f1f);
             transition: width 0.3s ease;
         }
+        
+        .alternative-downloads {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+        
+        .alternative-downloads ul {
+            list-style-type: none;
+            margin-top: 8px;
+        }
+        
+        .alternative-downloads li {
+            margin-bottom: 6px;
+        }
+        
+        .alternative-downloads a {
+            color: #fdbb2d;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -146,12 +169,12 @@
         <header class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 dance-text">HACKPACE</h1>
             <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-                Generate secure hidden links and browse privately with Tor
+                Generate secure invite links and browse privately with Tor
             </p>
         </header>
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            <!-- Invite Link Generator Card -->
+            <!-- Hidden Link Generator -->
             <div class="card p-6 md:p-8">
                 <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-yellow-400">
                     <i class="fas fa-link"></i> Invite Link Generator
@@ -177,7 +200,7 @@
                     <div class="space-y-2">
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-random text-yellow-400"></i>
-                            <span>Generates unique, hidden links</span>
+                            <span>Generates unique, random invite codes</span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-copy text-yellow-400"></i>
@@ -231,7 +254,14 @@
                     <i class="fas fa-download"></i> Download Tor Browser
                 </button>
                 
-                <p class="text-gray-400 text-sm mt-3 text-center">If download doesn't start, <a href="https://www.torproject.org/download/" target="_blank" class="text-yellow-400 underline">visit the official Tor download page</a></p>
+                <div class="alternative-downloads" id="alternativeDownloads">
+                    <h4 class="text-yellow-400 mb-2 font-semibold">Alternative Download Options:</h4>
+                    <ul>
+                        <li>• <a href="https://www.torproject.org/download/" target="_blank" class="text-yellow-400 underline">Official Tor Download Page</a></li>
+                        <li>• Email <a href="mailto:gettor@torproject.org" class="text-yellow-400 underline">gettor@torproject.org</a> with your OS name (windows, mac, linux, android)</li>
+                        <li>• Message <a href="https://t.me/GetTor_Bot" target="_blank" class="text-yellow-400 underline">@GetTor_Bot on Telegram</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         
@@ -249,26 +279,26 @@
                 <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
                     <i class="fab fa-tiktok text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">10,000+</h3>
-                    <p class="text-gray-300 mb-3">Tiktok Active Community</p>
-                    <a href="https://tiktok.com/@hackpace" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <p class="text-gray-300 mb-3">Active Community</p>
+                    <a href="https://tiktok.com/@yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-tiktok"></i> Follow
                     </a>
                 </div>
                 
                 <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
                     <i class="fab fa-github text-4xl mb-3 text-yellow-400"></i>
-                    <h3 class="text-2xl font-bold mb-1">15+</h3>
-                    <p class="text-gray-300 mb-3">Github Projects Launched</p>
-                    <a href="https://github.com/pen091" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <h3 class="text-2xl font-bold mb-1">350+</h3>
+                    <p class="text-gray-300 mb-3">Projects Launched</p>
+                    <a href="https://github.com/yourprofile" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-github"></i> View
                     </a>
                 </div>
                 
                 <div class="stat-card p-4 bg-gray-900 rounded-lg border border-gray-700 text-center">
                     <i class="fab fa-youtube text-4xl mb-3 text-yellow-400"></i>
-                    <h3 class="text-2xl font-bold mb-1">12+</h3>
-                    <p class="text-gray-300 mb-3">Youtube</p>
-                    <a href="https://youtube.com/hackpace" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <h3 class="text-2xl font-bold mb-1">120+</h3>
+                    <p class="text-gray-300 mb-3">Workshops Hosted</p>
+                    <a href="https://youtube.com/yourchannel" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-youtube"></i> Watch
                     </a>
                 </div>
@@ -277,7 +307,7 @@
                     <i class="fab fa-telegram text-4xl mb-3 text-yellow-400"></i>
                     <h3 class="text-2xl font-bold mb-1">100+</h3>
                     <p class="text-gray-300 mb-3">Telegram Members</p>
-                    <a href="https://t.me/penhacks" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
+                    <a href="https://t.me/yourchannel" target="_blank" class="inline-block py-2 px-4 bg-gray-800 rounded-lg text-sm flex items-center justify-center gap-2">
                         <i class="fab fa-telegram"></i> Join
                     </a>
                 </div>
@@ -295,7 +325,7 @@
         
         <!-- Footer -->
         <footer class="text-center pt-8 border-t border-gray-800">
-            <p class="text-gray-400">© 2025 Hackpace | Privacy Protection Tools</p>
+            <p class="text-gray-400">© 2023 Hackpace | Privacy Protection Tools</p>
             <p class="text-gray-500 text-sm mt-2">All rights reserved</p>
         </footer>
     </div>
@@ -313,6 +343,7 @@
             const notification = document.getElementById('notification');
             const downloadProgress = document.getElementById('downloadProgress');
             const progressBar = document.getElementById('progressBar');
+            const alternativeDownloads = document.getElementById('alternativeDownloads');
             
             // Base URL for the generated link (you can customize this)
             const baseUrl = 'https://hackpace.io/join/';
@@ -371,6 +402,14 @@
             const osButtons = document.querySelectorAll('.os-btn');
             let selectedOS = '';
             
+            // Updated file sizes for current Tor Browser versions
+            const fileSizes = {
+                windows: '120 MB',
+                mac: '150 MB',
+                linux: '130 MB',
+                android: '40 MB'
+            };
+            
             osButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
                     osButtons.forEach(b => b.classList.remove('selected'));
@@ -380,7 +419,10 @@
                     
                     const osName = this.querySelector('span').textContent;
                     const downloadBtn = document.getElementById('download-btn');
-                    downloadBtn.innerHTML = `<i class="fas fa-download"></i> Download for ${osName}`;
+                    downloadBtn.innerHTML = `<i class="fas fa-download"></i> Download for ${osName} (${fileSizes[selectedOS]})`;
+                    
+                    // Show alternative download options
+                    alternativeDownloads.style.display = 'block';
                 });
             });
             
@@ -399,7 +441,8 @@
                             <li>Launch Tor Browser from your start menu</li>
                             <li>Connect to the Tor network when prompted</li>
                         </ol>
-                        <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Windows 8.1 or higher, 64-bit</p>
+                        <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Windows 10 or higher, 64-bit</p>
+                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Support for Windows 7, 8, and 8.1 has been discontinued[citation:2]</p>
                     `,
                     mac: `
                         <h3 class="text-yellow-400 mb-3 text-lg font-semibold">macOS Installation Guide</h3>
@@ -411,7 +454,8 @@
                             <li>You may need to allow Tor Browser in Security & Privacy settings</li>
                             <li>Connect to the Tor network when prompted</li>
                         </ol>
-                        <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> macOS 10.14 or higher</p>
+                        <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> macOS 10.15 or higher</p>
+                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Support for macOS 10.12 to 10.14 has been discontinued[citation:2]</p>
                     `,
                     linux: `
                         <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Linux Installation Guide</h3>
@@ -423,6 +467,7 @@
                             <li>Connect to the Tor network when prompted</li>
                         </ol>
                         <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> 64-bit Linux distribution</p>
+                        <p class="mt-2 text-gray-400"><strong>Note:</strong> If you encounter issues, try the command-line method[citation:2]</p>
                     `,
                     android: `
                         <h3 class="text-yellow-400 mb-3 text-lg font-semibold">Android Installation Guide</h3>
@@ -435,6 +480,7 @@
                             <li>Tap "Connect" to establish a connection to the Tor network</li>
                         </ol>
                         <p class="mt-3 text-gray-400"><strong>System Requirements:</strong> Android 5.0 or higher</p>
+                        <p class="mt-2 text-gray-400"><strong>Note:</strong> Download from the official Tor Project website or Google Play Store[citation:1]</p>
                     `
                 };
                 
@@ -451,7 +497,7 @@
                 downloadProgress.style.display = 'block';
                 progressBar.style.width = '30%';
                 
-                // Updated download URLs for the latest Tor Browser versions
+                // Current Tor Browser download URLs (updated to latest stable versions)
                 const downloadUrls = {
                     windows: 'https://www.torproject.org/dist/torbrowser/13.0.14/torbrowser-install-win64-13.0.14.exe',
                     mac: 'https://www.torproject.org/dist/torbrowser/13.0.14/TorBrowser-13.0.14-macos_ALL.dmg',
